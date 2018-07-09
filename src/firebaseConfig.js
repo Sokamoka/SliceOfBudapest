@@ -1,7 +1,3 @@
-import Vue from "vue";
-import App from "./App.vue";
-import router from "./router";
-import store from "./store";
 import Firebase from "firebase";
 
 const config = {
@@ -13,12 +9,6 @@ const config = {
   messagingSenderId: "524213470589"
 };
 
-Firebase.initializeApp(config);
-
-Vue.config.productionTip = false;
-
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount("#app");
+const firebaseApp = Firebase.initializeApp(config);
+const db = firebaseApp.database();
+export const dbMenuRef = db.ref("menu");
