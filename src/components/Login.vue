@@ -1,12 +1,43 @@
 <template>
-  <div>
+  <section>
     <form @submit.prevent="login">
-      <input type="email" name="email" v-model="user.email">
-      <input type="password" name="password" v-model="user.password">
-      <button type="submit" >Log In</button>
-      <button type="button" @click="logout">Log out</button>
+      <div class="columns is-mobile">
+        <div class="column is-half is-offset-one-quarter">
+          <div class="field">
+            <p class="control has-icons-left has-icons-right">
+              <input class="input" type="email" placeholder="Email" v-model="user.email">
+              <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+              </span>
+              <span class="icon is-small is-right">
+                <i class="fas fa-check"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" type="password" placeholder="Password" v-model="user.password">
+              <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control">
+              <button  type="submit" class="button is-success">
+                Login
+              </button>
+              <button 
+                type="button"
+                class="button"
+                @click="logout"
+              >Log out</button>
+            </p>
+          </div>
+        </div>
+      </div>
     </form>
-  </div>
+  </section>
 </template>
 <script>
 import Firebase from "firebase";
