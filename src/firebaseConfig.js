@@ -1,14 +1,16 @@
-// import Firebase from "firebase";
-
-// const config = {
-//   apiKey: "",
-//   authDomain: "",
-//   databaseURL: "",
-//   projectId: "",
-//   storageBucket: "",
-//   messagingSenderId: ""
-// };
+import Firebase from "firebase/app";
 
 // const firebaseApp = Firebase.initializeApp(config);
 // const db = firebaseApp.database();
 // export const dbMenuRef = db.ref("menu");
+
+const config = {
+  apiKey: process.env.VUE_APP_API_KEY,
+  authDomain: process.env.VUE_APP_AUTH_DOMAIN,
+  databaseURL: process.env.VUE_APP_DATABASE_URL,
+  projectId: process.env.VUE_APP_PROJECT_ID,
+  storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID
+};
+
+Firebase.initializeApp(config);
