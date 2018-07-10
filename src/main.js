@@ -5,12 +5,12 @@ import store from "./store";
 import Firebase from "firebase";
 
 const config = {
-  apiKey: "AIzaSyCOraaD1lRuRa2mhFnYo-fUbel5P4-iYr8",
-  authDomain: "slice-of-budapest.firebaseapp.com",
-  databaseURL: "https://slice-of-budapest.firebaseio.com",
-  projectId: "slice-of-budapest",
-  storageBucket: "slice-of-budapest.appspot.com",
-  messagingSenderId: "524213470589"
+  apiKey: process.env.VUE_APP_API_KEY,
+  authDomain: process.env.VUE_APP_AUTH_DOMAIN,
+  databaseURL: process.env.VUE_APP_DATABASE_URL,
+  projectId: process.env.VUE_APP_PROJECT_ID,
+  storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID
 };
 
 Firebase.initializeApp(config);
