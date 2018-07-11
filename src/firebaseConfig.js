@@ -1,4 +1,4 @@
-import Firebase from "firebase/app";
+import Firebase from "firebase";
 
 // const firebaseApp = Firebase.initializeApp(config);
 // const db = firebaseApp.database();

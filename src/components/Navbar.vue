@@ -2,9 +2,9 @@
   <div class="navigation">
     <nav class="navbar container">
       <div class="navbar-brand">
-        <a class="navbar-item" href="/">
+        <router-link class="navbar-item" :to="{ name: 'home' }">
           Slice Of Budapest
-        </a>
+        </router-link>
         <div :class="{ 'navbar-burger burger': true, 'is-active': isMenuVisible }" data-target="navbarTop" @click="menuToggle">
           <span></span>
           <span></span>
@@ -14,9 +14,12 @@
 
       <div id="navbarTop" :class="{ 'navbar-menu': true, 'is-active': isMenuVisible }">
         <div class="navbar-start">
-          <a class="navbar-item" href="/feed">
-            Feed
-          </a>
+          <router-link class="navbar-item" :to="{ name: 'home' }">
+            List
+          </router-link>
+          <router-link class="navbar-item" to="/add">
+            Add Item
+          </router-link>
         </div>
         <div class="navbar-end">
           <div class="navbar-item has-dropdown is-hoverable">
@@ -41,9 +44,6 @@
           </div>
           <router-link class="navbar-item" :to="{ name: 'Login' }" v-show="!isLoggedIn">
             Login
-          </router-link>
-          <router-link class="navbar-item" :to="{ name: 'Register' }" v-show="!isLoggedIn">
-            Register
           </router-link>
         </div>
       </div>
@@ -87,7 +87,7 @@ export default {
 
 .navbar-brand {
   font-family: "Abel", sans-serif;
-  font-size: 28px;
+  font-size: 20px;
   font-weight: 700;
   text-transform: uppercase;
 
