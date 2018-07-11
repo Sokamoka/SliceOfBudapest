@@ -86,7 +86,6 @@ export default {
 }
 
 .navbar-brand {
-  font-family: "Abel", sans-serif;
   font-size: 20px;
   font-weight: 700;
   text-transform: uppercase;

@@ -40,14 +40,23 @@
   </section>
 </template>
 <script>
-import Firebase from "firebase";
+import Firebase from 'firebase';
+// import store from '../store/';
+
+// Firebase.auth().onAuthStateChanged(user => {
+//   if (user) {
+//     store.dispatch('setUser', user);
+//   } else {
+//     store.dispatch('setUser', null);
+//   }
+// });
 
 export default {
   data() {
     return {
       user: {
-        email: "",
-        password: ""
+        email: '',
+        password: ''
       }
     };
   },
@@ -59,7 +68,7 @@ export default {
           const errorCode = error.code;
           const errorMsg = error.message;
 
-          console.log("Msg:", errorMsg, errorCode);
+          console.log('Msg:', errorMsg, errorCode);
         });
     },
     logout() {}
