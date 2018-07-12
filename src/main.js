@@ -1,8 +1,11 @@
 import Vue from 'vue';
 import App from './App.vue';
-import router from './router';
+import { router } from './router';
 import store from '@/store';
-import './firebaseConfig';
+
+import auth from '@/auth';
+
+// import './firebaseConfig';
 import './assets/styles/main.scss';
 
 Vue.config.productionTip = false;
@@ -10,5 +13,8 @@ Vue.config.productionTip = false;
 new Vue({
   router,
   store,
+  beforeCreate() {
+    auth.init(this);
+  },
   render: h => h(App)
 }).$mount('#app');

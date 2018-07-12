@@ -4,7 +4,7 @@
       <div class="hero-body">
           <div class="container">
           <h1 class="title">
-              Home
+              Sign in
           </h1>
           <h2 class="subtitle">
               Hero subtitle
@@ -12,17 +12,17 @@
           </div>
       </div>
     </section>
+    <div id="firebaseui-auth-container"></div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import Login from '@/components/Login.vue';
+import auth from '@/auth';
 
 export default {
-  name: 'home',
-  components: {
-    Login
+  name: 'auth',
+  mounted() {
+    auth.authForm('#firebaseui-auth-container');
   }
 };
 </script>

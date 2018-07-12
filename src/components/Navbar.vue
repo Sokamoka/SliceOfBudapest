@@ -22,15 +22,21 @@
           </router-link>
         </div>
         <div class="navbar-end">
-          <div class="navbar-item has-dropdown is-hoverable">
-            <router-link class="navbar-link" :to="{ name: 'Profile', params: { list: 'projects' }}" v-show="isLoggedIn">
-              AAX
-            </router-link>
+          <div class="navbar-item has-dropdown is-hoverable" v-show="isLoggedIn">
+            <a class="navbar-link" href="#">
+              <avatar
+                :username="displayName"
+                :src="getAvatarImg"
+                :size="32"
+                background-color="#303030"
+              ></avatar>
+              {{ displayName }}
+            </a>
             <div class="navbar-dropdown is-boxed">
-              <router-link class="navbar-item" :to="{ name: 'Profile', params: { list: 'projects' }}">
+              <router-link class="navbar-item" :to="{ name: 'home', params: { list: 'projects' }}">
                 adad
               </router-link>
-              <router-link class="navbar-item" :to="{ name: 'Settings' }">
+              <router-link class="navbar-item" :to="{ name: 'home' }">
                 qweqwe
               </router-link>
               <hr class="navbar-divider">
@@ -42,8 +48,8 @@
               </a>
             </div>
           </div>
-          <router-link class="navbar-item" :to="{ name: 'Login' }" v-show="!isLoggedIn">
-            Login
+          <router-link class="navbar-item" :to="{ name: 'auth' }" v-show="!isLoggedIn">
+            Sign In
           </router-link>
         </div>
       </div>
@@ -51,11 +57,12 @@
   </div>
 </template>
 <script>
-// import Avatar from 'vue-avatar'
+import auth from '@/auth';
+import Avatar from 'vue-avatar';
 
 export default {
   components: {
-    // Avatar
+    Avatar
   },
   data() {
     return {
@@ -64,11 +71,26 @@ export default {
   },
   computed: {
     isLoggedIn() {
-      return true;
+      return this.user ? true : false;
+    },
+    user() {
+      return this.$store.getters['user/user'];
+    },
+    displayName() {
+      return this.user
+        ? this.user.displayName
+          ? this.user.displayName
+          : ''
+        : '';
+    },
+    getAvatarImg() {
+      return this.user ? this.user.photoURL : '';
     }
   },
   methods: {
-    logout() {},
+    logout() {
+      auth.logout();
+    },
     menuToggle() {
       this.isMenuVisible = !this.isMenuVisible;
     }
