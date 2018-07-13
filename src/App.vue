@@ -7,11 +7,18 @@
 
 <script>
 import Navbar from './components/Navbar.vue';
+import auth from '@/auth';
 
 export default {
   name: 'app',
   components: {
     Navbar
+  },
+  created() {
+    this.$store.dispatch(
+      'properties/setPropertiesRef',
+      auth.getDB().ref('properties')
+    );
   }
 };
 </script>

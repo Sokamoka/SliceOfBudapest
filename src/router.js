@@ -4,7 +4,7 @@ import auth from '@/auth';
 
 import Home from './views/Home.vue';
 // import About from './views/About.vue';
-// import AddItem from './views/AddItem.vue';
+import AddItem from './views/AddItem.vue';
 import Dashboard from './views/Dashboard.vue';
 import Auth from './views/Auth.vue';
 
@@ -26,6 +26,12 @@ const routes = [
     path: '/dashboard',
     name: 'dashboard',
     component: Dashboard,
+    meta: { requireAuth: true }
+  },
+  {
+    path: '/add',
+    name: 'add',
+    component: AddItem,
     meta: { requireAuth: true }
   },
   { path: '*', redirect: '/home' }

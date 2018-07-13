@@ -12,17 +12,27 @@
           </div>
       </div>
     </section>
+    <section>
+      <ul>
+        <li v-for="item in getProperties" :key="item.id">
+          {{ item.address }}
+        </li>
+      </ul>
+    </section>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Login from '@/components/Login.vue';
+// import Login from '@/components/Login.vue';
 
 export default {
   name: 'home',
-  components: {
-    Login
+  data: () => ({}),
+  computed: {
+    getProperties() {
+      return this.$store.getters['properties/getProperties'];
+    }
   }
 };
 </script>

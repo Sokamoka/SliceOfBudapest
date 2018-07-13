@@ -17,7 +17,7 @@
           <router-link class="navbar-item" :to="{ name: 'home' }">
             List
           </router-link>
-          <router-link class="navbar-item" to="/add">
+          <router-link class="navbar-item" to="/add" v-show="isLoggedIn">
             Add Item
           </router-link>
         </div>

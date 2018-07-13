@@ -18,11 +18,11 @@ const auth = {
   init(context) {
     this.context = context;
 
-    firebase.initializeApp(config);
+    this.firebaseApp = firebase.initializeApp(config);
     this.uiConfig = {
       signInSuccessUrl: 'dashboard',
       signInOptions: [
-        // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+        firebase.auth.FacebookAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID
       ]
@@ -51,6 +51,9 @@ const auth = {
   },
   logout() {
     firebase.auth().signOut();
+  },
+  getDB() {
+    return this.firebaseApp.database();
   }
 };
 
