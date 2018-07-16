@@ -15,7 +15,10 @@
     <section>
       <ul>
         <li v-for="item in getProperties" :key="item.id">
-          {{ item.address }}
+          <div>{{ item.address }}</div>
+          <div>
+            <router-link :to="{ name: 'property', params: { id: item['.key'] }}">GO</router-link>
+          </div>
         </li>
       </ul>
     </section>

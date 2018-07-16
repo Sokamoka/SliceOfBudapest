@@ -57,11 +57,7 @@ export default {
   name: 'AddItem',
   data() {
     return {
-      properties: {
-        address: '',
-        price: null,
-        area: null
-      }
+      properties: {}
     };
   },
   methods: {
@@ -70,6 +66,8 @@ export default {
         .getDB()
         .ref('properties')
         .push(this.properties);
+      // this.$store.dispatch('properties/addProperty', this.properties);
+      this.properties = {};
     }
   }
 };

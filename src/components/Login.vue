@@ -41,15 +41,6 @@
 </template>
 <script>
 import Firebase from 'firebase';
-// import store from '../store/';
-
-// Firebase.auth().onAuthStateChanged(user => {
-//   if (user) {
-//     store.dispatch('setUser', user);
-//   } else {
-//     store.dispatch('setUser', null);
-//   }
-// });
 
 export default {
   data() {
