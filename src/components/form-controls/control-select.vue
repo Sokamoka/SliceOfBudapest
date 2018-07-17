@@ -7,13 +7,14 @@
     <div class="field is-expanded">
       <label v-if="!isHorizontal" class="label" v-html="label"></label>
       <div class="field">
-        <div class="select">
-          <select v-model="model">
+        <div :class="selectClasses">
+          <select v-model="model" :disabled="disabled">
             <option v-if="placeholder.length" value="" disabled>{{ placeholder }}</option>
             <slot></slot>
           </select>
         </div>
       </div>
+      <p v-if="hasErrors" class="help is-danger">{{ errorMessage }}</p>
       <p v-if="isHelpText" class="help">{{ help }}</p>
     </div>
   </div>
@@ -21,10 +22,23 @@
 </template>
 <script>
 export default {
+  $_veeValidate: {
+    value() {
+      return this.value;
+    },
+
+    name() {
+      return this.name;
+    }
+  },
+  inject: ['parentValidator'],
   props: {
     value: {
       type: String,
       default: ''
+    },
+    name: {
+      type: String
     },
     label: {
       type: String,
@@ -39,6 +53,10 @@ export default {
       default: ''
     },
     isHorizontal: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     }
@@ -59,9 +77,24 @@ export default {
         'is-horizontal': this.isHorizontal
       };
     },
+    selectClasses() {
+      return {
+        select: true,
+        'is-danger': this.hasErrors
+      };
+    },
     isHelpText() {
       return this.help.length ? true : false;
+    },
+    hasErrors() {
+      return this.errors ? this.errors.has(this.name) : false;
+    },
+    errorMessage() {
+      return this.errors.first(this.name);
     }
+  },
+  created() {
+    this.$validator = this.parentValidator;
   }
 };
 </script>

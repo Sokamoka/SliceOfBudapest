@@ -7,19 +7,46 @@
     <div class="field is-expanded">
       <label v-if="!isHorizontal" class="label" v-html="label"></label>
       <div class="field">
-        <textarea class="textarea" :placeholder="placeholder" :rows="rows"></textarea>
+        <resizable :active="autosize">
+          <textarea 
+            :class="textareaClasses"
+            :placeholder="placeholder"
+            :rows="rows"
+            :disabled="disabled"
+            v-model="model"
+          ></textarea>
+        </resizable>
       </div>
+      <p v-if="hasErrors" class="help is-danger">{{ errorMessage }}</p>
       <p v-if="isHelpText" class="help">{{ help }}</p>
     </div>
   </div>
 </div>
 </template>
 <script>
+import Resizable from './resizable';
+
 export default {
+  $_veeValidate: {
+    value() {
+      return this.value;
+    },
+
+    name() {
+      return this.name;
+    }
+  },
+  inject: ['parentValidator'],
+  components: {
+    Resizable
+  },
   props: {
     value: {
       type: String,
       default: ''
+    },
+    name: {
+      type: String
     },
     label: {
       type: String,
@@ -40,6 +67,14 @@ export default {
     rows: {
       type: Number,
       default: 5
+    },
+    autosize: {
+      type: Boolean,
+      default: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -54,13 +89,27 @@ export default {
     mainClasses() {
       return {
         field: true,
-        'is-control-select': true,
         'is-horizontal': this.isHorizontal
+      };
+    },
+    textareaClasses() {
+      return {
+        textarea: true,
+        'is-danger': this.hasErrors
       };
     },
     isHelpText() {
       return this.help.length ? true : false;
+    },
+    hasErrors() {
+      return this.errors ? this.errors.has(this.name) : false;
+    },
+    errorMessage() {
+      return this.errors.first(this.name);
     }
+  },
+  created() {
+    this.$validator = this.parentValidator;
   }
 };
 </script>

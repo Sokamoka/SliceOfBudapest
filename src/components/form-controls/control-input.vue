@@ -12,16 +12,18 @@
         </p>
         <p class="control is-expanded">
           <input
-            class="input"
+            :class="inputClasses"
             v-model="model"
             :type="type"
             :placeholder="placeholder"
+            :disabled="disabled"
           >
         </p>
         <p v-if="isSufFixed" class="control">
           <a class="button is-static" v-html="suffix"></a>
         </p>
       </div>
+      <p v-if="hasErrors" class="help is-danger">{{ errorMessage }}</p>
       <p v-if="isHelpText" class="help">{{ help }}</p>
     </div>
   </div>
@@ -29,8 +31,21 @@
 </template>
 <script>
 export default {
+  $_veeValidate: {
+    value() {
+      return this.value;
+    },
+
+    name() {
+      return this.name;
+    }
+  },
+  inject: ['parentValidator'],
   props: {
     value: {
+      type: String
+    },
+    name: {
       type: String
     },
     prefix: {
@@ -60,6 +75,10 @@ export default {
     isHorizontal: {
       type: Boolean,
       default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -80,7 +99,14 @@ export default {
     fieldClasses() {
       return {
         field: true,
-        'has-addons': this.isPreFixed || this.isSufFixed
+        'has-addons': this.isPreFixed || this.isSufFixed,
+        'is-danger': this.hasErrors
+      };
+    },
+    inputClasses() {
+      return {
+        input: true,
+        'is-danger': this.hasErrors
       };
     },
     isPreFixed() {
@@ -91,7 +117,16 @@ export default {
     },
     isHelpText() {
       return this.help.length ? true : false;
+    },
+    hasErrors() {
+      return this.errors ? this.errors.has(this.name) : false;
+    },
+    errorMessage() {
+      return this.errors.first(this.name);
     }
+  },
+  created() {
+    this.$validator = this.parentValidator;
   }
 };
 </script>

@@ -1,5 +1,3 @@
-/* eslint vue/order-in-components:0, vue/require-default-prop:0 */
-// @vue/component
 export default {
   props: {
     active: {
@@ -8,28 +6,31 @@ export default {
   },
 
   methods: {
-    resizeTextarea (event) {
+    resizeTextarea(event) {
       event.target.style.height = 'auto';
       event.target.style.height = event.target.scrollHeight + 'px';
     }
   },
 
-  mounted () {
+  mounted() {
     if (!this.active) {
       return;
     }
     this.$nextTick(() => {
-      this.$el.setAttribute('style', 'height:' + this.$el.scrollHeight + 'px;overflow-y:hidden;');
+      this.$el.setAttribute(
+        'style',
+        'height:' + this.$el.scrollHeight + 'px;overflow-y:hidden;'
+      );
     });
 
     this.$el.addEventListener('input', this.resizeTextarea);
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     this.$el.removeEventListener('input', this.resizeTextarea);
   },
 
-  render () {
+  render() {
     return this.$slots.default[0];
   }
 };

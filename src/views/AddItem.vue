@@ -7,7 +7,7 @@
               Új ingatlan hozzáadása
           </h1>
           <h2 class="subtitle">
-              Hero subtitle
+              {{ $t("message.hello") }}
           </h2>
           </div>
       </div>
@@ -31,7 +31,10 @@
                 v-model="properties.base.propertiesType"
                 label="Típus"
                 placeholder="Kérem válassz"
+                name="basePropertiesType"
+                v-validate="{required: true}"
               >
+                <option value="">select</option>
                 <option v-for="option in propertiesTypes" :key="option.value" :value="option">{{ option }}</option>
               </control-select>
             </div>
@@ -40,17 +43,23 @@
               <control-input
                 v-if="isOnOffer"
                 label="Eladási ár"
-                v-model="properties.base.price"
+                type="number"
+                v-model="properties.base.priceOnOffer"
                 placeholder="Eladási ár"
                 suffix="milió Ft"
+                name="basePriceOnOffer"
+                v-validate="{required: true}"
               ></control-input>
 
               <control-input
                 v-if="!isOnOffer"
                 label="Kiadási ár"
-                v-model="properties.base.price"
+                v-model="properties.base.priceOnRent"
+                type="number"
                 placeholder="Kiadási ár"
                 suffix="ezer Ft"
+                name="basePriceOnRent"
+                v-validate="{required: true}"
               ></control-input>
 
               <control-input
@@ -59,6 +68,8 @@
                 placeholder="Méret"
                 suffix="m<sup>2</sup>"
                 type="number"
+                name="baseSize"
+                v-validate="{required: true}"
               ></control-input>
             </div>
           </div>
@@ -92,7 +103,6 @@
               <control-select
                 v-model="properties.area"
                 label="Sátusz"
-                :options="selectOptions"
                 placeholder="Kérem válassz"
                 help="Lorem ipsum help text"
               ></control-select>
@@ -124,7 +134,6 @@
               <control-select
                 v-model="properties.area"
                 label="Sátusz"
-                :options="selectOptions"
                 placeholder="Kérem válassz"
                 help="Lorem ipsum help text"
               ></control-select>
@@ -140,12 +149,15 @@
                 placeholder="Leírás"
                 help="Minimum 250 karakter"
                 :rows="10"
+                name="message"
+                data-vv-as="leírás"
+                v-validate="{required: true, min: 20}"
               ></control-textarea>
             </div>
           </div>
         </section>
-        <section>
 
+        <section>
           <div class="field">
             <p class="control">
               <button
@@ -182,25 +194,18 @@ export default {
           type: 'eladó'
         }
       },
-      properties: {},
-      selectOptions: [
-        {
-          name: 'asdasdasd',
-          value: 'a'
-        },
-        {
-          name: 'bsdasdasd',
-          value: 'b'
-        }
-      ]
+      properties: {}
     };
+  },
+  provide() {
+    return { parentValidator: this.$validator };
   },
   computed: {
     propertiesTypes() {
       return propertiesType;
     },
     isOnOffer() {
-      return this.properties.type === 'eladó';
+      return this.properties.base.type === 'eladó';
     }
   },
   created() {
