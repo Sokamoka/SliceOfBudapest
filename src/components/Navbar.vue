@@ -33,12 +33,12 @@
               {{ displayName }}
             </a>
             <div class="navbar-dropdown is-boxed">
-              <router-link class="navbar-item" :to="{ name: 'home', params: { list: 'projects' }}">
-                adad
-              </router-link>
-              <router-link class="navbar-item" :to="{ name: 'home' }">
-                qweqwe
-              </router-link>
+              <a class="navbar-item" @click.prevent="setLocale('hu')">
+                HU
+              </a>
+              <a class="navbar-item" @click.prevent="setLocale('en')">
+                EN
+              </a>
               <hr class="navbar-divider">
               <a class="navbar-item" href="#" @click.prevent="logout">
                 logout
@@ -57,6 +57,7 @@
   </div>
 </template>
 <script>
+import { Validator } from 'vee-validate';
 import auth from '@/auth';
 import Avatar from 'vue-avatar';
 
@@ -93,6 +94,10 @@ export default {
     },
     menuToggle() {
       this.isMenuVisible = !this.isMenuVisible;
+    },
+    setLocale(locale) {
+      this.$i18n.locale = locale;
+      Validator.localize(locale);
     }
   }
 };

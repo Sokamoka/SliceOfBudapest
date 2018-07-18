@@ -4,7 +4,7 @@
       <div class="hero-body">
           <div class="container">
           <h1 class="title">
-              Új ingatlan hozzáadása
+              {{ $t('titles.add-new-property') }}
           </h1>
           <h2 class="subtitle">
               {{ $t("message.hello") }}
@@ -65,7 +65,8 @@
               <control-input
                 label="Méret (m<sup>2</sup>)"
                 v-model="properties.base.size"
-                placeholder="Méret"
+                :placeholder="$t('properties.size')"
+                :data-vv-as="$t('properties.size')"
                 suffix="m<sup>2</sup>"
                 type="number"
                 name="baseSize"
@@ -145,26 +146,26 @@
           <div class="columns is-mobile">
             <div class="column">
               <control-textarea
-                v-model="properties.message"
+                v-model="properties.description"
                 placeholder="Leírás"
-                help="Minimum 250 karakter"
+                :help="descriptionHelpText"
                 :rows="10"
                 name="message"
                 data-vv-as="leírás"
-                v-validate="{required: true, min: 20}"
+                v-validate="{required: true, min: descriptionLength}"
               ></control-textarea>
             </div>
           </div>
         </section>
 
         <section>
-          <div class="field">
+          <div class="field is-grouped is-grouped-right">
             <p class="control">
               <button
                 type="submit"
                 class="button is-success"
               >
-                Save
+                Submit
               </button>
             </p>
           </div>
@@ -174,10 +175,11 @@
   </div>
 </template>
 <script>
+// import Vue from 'vue';
 import ControlInput from '../components/form-controls/control-input';
 import ControlSelect from '../components/form-controls/control-select';
 import ControlTextarea from '../components/form-controls/control-textarea';
-import { propertiesType } from '../constants';
+import { PROPERTIES_TYPE, DESCRIPTION_LENGTH } from '../constants';
 import auth from '@/auth';
 
 export default {
@@ -192,9 +194,11 @@ export default {
       defaults: {
         base: {
           type: 'eladó'
-        }
+        },
+        description: ''
       },
-      properties: {}
+      properties: {},
+      descriptionLength: DESCRIPTION_LENGTH
     };
   },
   provide() {
@@ -202,10 +206,16 @@ export default {
   },
   computed: {
     propertiesTypes() {
-      return propertiesType;
+      return PROPERTIES_TYPE;
     },
     isOnOffer() {
       return this.properties.base.type === 'eladó';
+    },
+    descriptionHelpText() {
+      const remainder = DESCRIPTION_LENGTH - this.properties.description.length;
+      return remainder > 0
+        ? this.$i18n.t('properties.remaining', [remainder])
+        : '';
     }
   },
   created() {
@@ -213,12 +223,16 @@ export default {
   },
   methods: {
     submitProperty() {
-      auth
-        .getDB()
-        .ref('properties')
-        .push(this.properties);
-      // this.$store.dispatch('properties/addProperty', this.properties);
-      this.properties = {};
+      this.$validator.validate().then(result => {
+        if (!result) {
+          auth
+            .getDB()
+            .ref('properties')
+            .push(this.properties);
+          // this.$store.dispatch('properties/addProperty', this.properties);
+          this.properties = Object.assign({}, this.defaults);
+        }
+      });
     }
   }
 };

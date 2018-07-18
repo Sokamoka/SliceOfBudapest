@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import VeeValidate from 'vee-validate';
+// import VeeValidate from 'vee-validate';
 import App from './App.vue';
 import { router } from './router';
 import { i18n } from './localization';
@@ -11,7 +11,7 @@ import './assets/styles/main.scss';
 
 Vue.config.productionTip = false;
 
-Vue.use(VeeValidate);
+// Vue.use(VeeValidate);
 
 new Vue({
   router,
