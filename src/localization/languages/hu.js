@@ -1,6 +1,7 @@
 export default {
   titles: {
-    'add-new-property': 'Új ingatlan hozzáadása'
+    'add-new-property': 'Új ingatlan hozzáadása',
+    properties: 'Ingatlanok'
   },
   properties: {
     size: 'Méret',

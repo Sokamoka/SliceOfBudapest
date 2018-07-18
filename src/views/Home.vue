@@ -1,36 +1,44 @@
 <template>
-  <div class="container">
-    <section class="hero">
+  <div>
+    <section class="hero is-primary">
       <div class="hero-body">
           <div class="container">
           <h1 class="title">
-              Home
+              {{ $t('titles.properties') }}
           </h1>
           <h2 class="subtitle">
-              Hero subtitle
+              {{ $t("message.hello") }}
           </h2>
           </div>
       </div>
     </section>
-    <section>
-      <ul>
-        <li v-for="item in getProperties" :key="item.id">
-          <div>{{ item.address }}</div>
-          <div>
-            <router-link :to="{ name: 'property', params: { id: item['.key'] }}">GO</router-link>
+    <div class="container">
+      <section class="section">
+        <div class="collections">
+          <div class="columns is-multiline">
+            <div
+              class="column is-3"
+              v-for="item in getProperties"
+              :key="item['.key']"
+            >
+              <card :item="item"></card>
+            </div>
           </div>
-        </li>
-      </ul>
-    </section>
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-// import Login from '@/components/Login.vue';
+import Card from '@/components/Card.vue';
 
 export default {
   name: 'home',
+  components: {
+    Card
+  },
   data: () => ({}),
   computed: {
     getProperties() {

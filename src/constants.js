@@ -8,3 +8,11 @@ export const PROPERTIES_TYPE = [
   'Nyaraló',
   'Telek'
 ];
+
+export const PROPERTY_MATERIAL_TYPE = [
+  'Tégla',
+  'Panel',
+  'Csúsztatott zsalus',
+  'Ytong',
+  'Vályog'
+];

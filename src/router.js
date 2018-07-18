@@ -53,7 +53,6 @@ router.beforeEach((to, from, next) => {
   const currentUser = auth.user();
   const requireAuth = to.matched.some(record => record.meta.requireAuth);
   const guestOnly = to.matched.some(record => record.meta.guestOnly);
-  // console.log('TO:', currentUser, requireAuth, guestOnly);
 
   if (requireAuth && !currentUser) next('auth');
   else if (guestOnly && currentUser) next('dashboard');

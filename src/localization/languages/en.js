@@ -1,6 +1,7 @@
 export default {
   titles: {
-    'add-new-property': 'Add new property'
+    'add-new-property': 'Add new property',
+    properties: 'Properties'
   },
   properties: {
     size: 'Size',

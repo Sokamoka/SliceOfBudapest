@@ -16,9 +16,9 @@
       <form @submit.prevent="submitProperty">
         <section class="section">
           <h1 class="is-size-3">Alapadatok</h1>
-          <div class="columns is-mobile">
-            <div class="column is-half">
+          <div class="columns is-multiline">
 
+            <div class="column is-half">
               <control-select
                 v-model="properties.base.type"
                 label="Eladó / Kiadó"
@@ -26,7 +26,9 @@
                 <option value="eladó">Eladó</option>
                 <option value="kiadó">Kiadó</option>
               </control-select>
+            </div>
 
+            <div class="column is-half">
               <control-select
                 v-model="properties.base.propertiesType"
                 label="Típus"
@@ -38,10 +40,9 @@
                 <option v-for="option in propertiesTypes" :key="option.value" :value="option">{{ option }}</option>
               </control-select>
             </div>
-            <div class="column is-half">
 
+            <div v-if="isOnOffer" class="column is-half">
               <control-input
-                v-if="isOnOffer"
                 label="Eladási ár"
                 type="number"
                 v-model="properties.base.priceOnOffer"
@@ -50,9 +51,10 @@
                 name="basePriceOnOffer"
                 v-validate="{required: true}"
               ></control-input>
+            </div>
 
+            <div v-if="!isOnOffer" class="column is-half">
               <control-input
-                v-if="!isOnOffer"
                 label="Kiadási ár"
                 v-model="properties.base.priceOnRent"
                 type="number"
@@ -61,7 +63,9 @@
                 name="basePriceOnRent"
                 v-validate="{required: true}"
               ></control-input>
+            </div>
 
+            <div class="column is-half">
               <control-input
                 label="Méret (m<sup>2</sup>)"
                 v-model="properties.base.size"
@@ -75,75 +79,293 @@
             </div>
           </div>
         </section>
+
         <section class="section">
-          <h1 class="is-size-3">További adatok</h1>
-          <div class="columns is-mobile">
+          <h1 class="is-size-3">Cím</h1>
+          <div class="columns is-multiline">
             <div class="column is-half">
               <control-input
-                v-if="!isOnOffer"
+                label="Város"
+                v-model="properties.address.city"
+                placeholder="Város"
+                name="addressCity"
+                v-validate="{required: true}"
+              ></control-input>
+            </div>
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="Kerület"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+            <div class="column is-half">
+              <control-input
+                label="Utca"
+                v-model="properties.address.street"
+                placeholder="utca"
+                name="addressStreet"
+                v-validate="{required: true}"
+              ></control-input>
+            </div>
+
+            <div class="column is-half">
+              <control-input
+                label="Házszám"
+                v-model="properties.address.number"
+                placeholder="Házszám"
+              ></control-input>
+            </div>
+          </div>
+        </section>
+        <section class="section">
+          <h1 class="is-size-3">További adatok</h1>
+          <div class="columns is-multiline">
+
+            <div v-if="!isOnOffer" class="column is-half">
+              <control-input
                 label="Minimum bérlési idő"
                 v-model="properties.rooms"
                 placeholder="Szobák száma"
                 suffix="hónap"
               ></control-input>
+            </div>
 
+            <div v-if="!isOnOffer" class="column is-half">
+              <control-input
+                label="Kaució"
+                v-model="properties.rooms"
+                placeholder="Kaució"
+                suffix="hónap"
+              ></control-input>
+            </div>
+
+            <div class="column is-half">
               <control-input 
                 label="Egész szobák"
                 v-model="properties.rooms"
                 placeholder="Szobák száma"
                 suffix="szoba"
               ></control-input>
-
-              <control-input
-                label="Méret"
-                v-model="properties.area"
-                placeholder="Add meg a mértet"
-                suffix="m2"
-              ></control-input>
-
-              <control-select
-                v-model="properties.area"
-                label="Sátusz"
-                placeholder="Kérem válassz"
-                help="Lorem ipsum help text"
-              ></control-select>
             </div>
 
             <div class="column is-half">
-              <control-input
-                v-if="!isOnOffer"
-                label="Kaució"
-                v-model="properties.rooms"
-                placeholder="Kaució"
-                suffix="hónap"
-              ></control-input>
-
               <control-input 
                 label="Fél szobák"
                 v-model="properties.rooms"
                 placeholder="Szobák száma"
                 suffix="szoba"
               ></control-input>
-
-              <control-input
-                label="Méret"
-                v-model="properties.area"
-                placeholder="Add meg a mértet"
-                suffix="m2"
-              ></control-input>
-
-              <control-select
-                v-model="properties.area"
-                label="Sátusz"
-                placeholder="Kérem válassz"
-                help="Lorem ipsum help text"
-              ></control-select>
             </div>
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="Építőanyag típusa"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="Komfort"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="Jelenlegi állapot"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="Energiatanúsítvány"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="Emelet"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="Erkély típus"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="WC és Fürdő"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="Parkolási lehetőségek"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="Belmagasság"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="Berendezés"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="Gépesítés"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="Kertkapcsolatos"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="Generációs"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="Kilátás"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="Tájolás"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="Fürdőszobák száma"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="Mellékhelyiségek száma"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+            <div class="column is-half">
+              <control-select
+                v-model="properties.address.district"
+                label="Fűtés"
+                placeholder="Kérem válassz"
+              >
+                <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+              </control-select>
+            </div>
+
+            <div class="column is-half">
+              <control-input 
+                label="Építés éve"
+                v-model="properties.rooms"
+                placeholder="Építés éve"
+              ></control-input>
+            </div>
+
+            <div class="column is-half">
+              <control-input 
+                label="Épület szintjei"
+                type="number"
+                v-model="properties.rooms"
+                placeholder="Épület szintjei"
+                suffix="emelet"
+              ></control-input>
+            </div>
+
           </div>
         </section>
         <section class="section">
           <h1 class="is-size-3">Leírás</h1>
-          <div class="columns is-mobile">
+          <div class="columns">
             <div class="column">
               <control-textarea
                 v-model="properties.description"
@@ -158,14 +380,14 @@
           </div>
         </section>
 
-        <section>
+        <section class="section">
           <div class="field is-grouped is-grouped-right">
             <p class="control">
               <button
                 type="submit"
-                class="button is-success"
+                class="button is-success is-medium"
               >
-                Submit
+                Save
               </button>
             </p>
           </div>
@@ -175,7 +397,6 @@
   </div>
 </template>
 <script>
-// import Vue from 'vue';
 import ControlInput from '../components/form-controls/control-input';
 import ControlSelect from '../components/form-controls/control-select';
 import ControlTextarea from '../components/form-controls/control-textarea';
@@ -195,6 +416,7 @@ export default {
         base: {
           type: 'eladó'
         },
+        address: {},
         description: ''
       },
       properties: {},
