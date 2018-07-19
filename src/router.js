@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 // import auth from '@/auth';
 import { i18n } from './localization';
-// import store from '@/store';
+import store from '@/store';
 
 import Home from './views/Home.vue';
 // import About from './views/About.vue';
@@ -64,17 +64,16 @@ export const router = new Router({
 router.beforeEach((to, from, next) => {
   setLocale(to);
   // const currentUser = auth.user();
-  // const currentUser = store.getters['user/user'];
-  // const requireAuth = to.matched.some(record => record.meta.requireAuth);
-  // const guestOnly = to.matched.some(record => record.meta.guestOnly);
+  const currentUser = store.getters['auth/isLoggedIn'];
+  const requireAuth = to.matched.some(record => record.meta.requireAuth);
+  const guestOnly = to.matched.some(record => record.meta.guestOnly);
 
-  // console.log('Router - currentUser:', currentUser, to);
+  console.log('Router - currentUser:', currentUser);
 
-  // if (requireAuth && !currentUser)
-  //   next({ name: 'auth', params: { locale: i18n.locale } });
-  // // else if (guestOnly && currentUser) next('dashboard');
-  // else next();
-  next();
+  if (requireAuth && !currentUser)
+    next({ name: 'home', params: { locale: i18n.locale } });
+  else if (guestOnly && currentUser) next('dashboard');
+  else next();
 });
 
 const setLocale = to => {

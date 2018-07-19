@@ -81,22 +81,6 @@ export default {
   },
   computed: {
     ...mapState('auth', ['user', 'isLoggedIn'])
-    // isLoggedIn() {
-    //   return this.user ? true : false;
-    // },
-    // user() {
-    //   return this.$store.getters['user/user'];
-    // },
-    // displayName() {
-    //   return this.user
-    //     ? this.user.displayName
-    //       ? this.user.displayName
-    //       : ''
-    //     : '';
-    // },
-    // getAvatarImg() {
-    //   return this.user ? this.user.photoURL : '';
-    // }
   },
   methods: {
     ...mapActions('auth', ['login', 'logout']),

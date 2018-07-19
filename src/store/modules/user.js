@@ -1,22 +1,28 @@
-import auth from '@/auth';
+import { firebaseAction } from 'vuexfire';
+import db from '@/firebase/db';
+
+const state = {
+  users: []
+};
+
+const getters = {
+  usersById(state) {
+    return state.users.reduce((byId, user) => {
+      byId[user.id] = user;
+      return byId;
+    }, {});
+  }
+};
+
+const actions = {
+  init: firebaseAction(({ bindFirebaseRef }) => {
+    bindFirebaseRef('users', db.collection('users'));
+  })
+};
 
 export default {
   namespaced: true,
-  state: {
-    user: null
-  },
-  getters: {
-    user: state => state.user,
-    isLogged: state => state.user !== null
-  },
-  mutations: {
-    setUser(state, user) {
-      state.user = user;
-    }
-  },
-  actions: {
-    setCurrentUser: ({ commit }) => {
-      commit('setUser', auth.user());
-    }
-  }
+  state,
+  actions,
+  getters
 };
