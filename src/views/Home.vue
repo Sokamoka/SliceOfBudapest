@@ -18,7 +18,7 @@
           <div class="columns is-multiline">
             <div
               class="column is-3"
-              v-for="item in getProperties"
+              v-for="item in properties"
               :key="item['.key']"
             >
               <card :item="item"></card>
@@ -32,6 +32,7 @@
 
 <script>
 // @ is an alias to /src
+import { mapState, mapActions } from 'vuex';
 import Card from '@/components/Card.vue';
 
 export default {
@@ -41,9 +42,14 @@ export default {
   },
   data: () => ({}),
   computed: {
-    getProperties() {
-      return this.$store.getters['properties/getProperties'];
-    }
-  }
+    ...mapState('properties', ['properties'])
+    // getProperties() {
+    //   return this.$store.getters['properties/getProperties'];
+    // }
+  },
+  mounted() {
+    this.init();
+  },
+  methods: mapActions('properties', ['init'])
 };
 </script>

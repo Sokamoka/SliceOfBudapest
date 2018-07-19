@@ -1,5 +1,5 @@
 import { firebaseAction } from 'vuexfire';
-// import auth from '@/auth';
+import db from '@/firebase/db';
 
 export default {
   namespaced: true,
@@ -11,19 +11,16 @@ export default {
     getProperties: state => state.properties,
     getProperty: state => state.property
   },
-  mutations: {},
   actions: {
     setPropertiesRef: firebaseAction(({ bindFirebaseRef }, { ref }) => {
       bindFirebaseRef('properties', ref);
     }),
     setPropertyRef: firebaseAction(({ bindFirebaseRef }, { ref }) => {
       bindFirebaseRef('property', ref);
+    }),
+    init: firebaseAction(({ bindFirebaseRef }) => {
+      bindFirebaseRef('properties', db.collection('properties'));
+      console.log('INIT');
     })
-    // addProperty: property => {
-    //   auth
-    //     .getDB()
-    //     .ref('properties')
-    //     .push(property);
-    // }
   }
 };

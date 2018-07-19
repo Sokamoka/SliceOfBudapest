@@ -399,11 +399,12 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 import ControlInput from '../components/form-controls/control-input';
 import ControlSelect from '../components/form-controls/control-select';
 import ControlTextarea from '../components/form-controls/control-textarea';
 import { PROPERTIES_TYPE, DESCRIPTION_LENGTH } from '../constants';
-import auth from '@/auth';
+import db from '@/firebase/db';
 
 export default {
   name: 'AddItem',
@@ -430,6 +431,7 @@ export default {
     return { parentValidator: this.$validator };
   },
   computed: {
+    ...mapState('auth', ['user']),
     propertiesTypes() {
       return PROPERTIES_TYPE;
     },
@@ -449,13 +451,13 @@ export default {
   methods: {
     submitProperty() {
       this.$validator.validate().then(result => {
-        if (!result) {
-          auth
-            .getDB()
-            .ref('properties')
-            .push(this.properties);
-          // this.$store.dispatch('properties/addProperty', this.properties);
+        if (result) {
+          console.log('VALID!');
+          db.collection('properties')
+            .doc(this.user.id)
+            .set(this.properties);
           this.properties = Object.assign({}, this.defaults);
+          this.$validator.reset();
         }
       });
     }

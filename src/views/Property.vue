@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import auth from '@/auth';
+// import auth from '@/auth';
 
 export default {
   // data() {
@@ -41,10 +41,10 @@ export default {
   created() {
     // console.log(this.$route.params.id);
     // this.property = auth.getDB().ref('properties/' + this.$route.params.id);
-    this.$store.dispatch(
-      'properties/setPropertyRef',
-      auth.getDB().ref(`properties/${this.$route.params.id}`)
-    );
+    // this.$store.dispatch(
+    //   'properties/setPropertyRef',
+    //   auth.getDB().ref(`properties/${this.$route.params.id}`)
+    // );
   }
 };
 </script>

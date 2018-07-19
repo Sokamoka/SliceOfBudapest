@@ -19,8 +19,5 @@ new Vue({
   router,
   i18n,
   store,
-  // beforeCreate() {
-  //   auth.init(this);
-  // },
   render: h => h(App)
 }).$mount('#app');
