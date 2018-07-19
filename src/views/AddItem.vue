@@ -147,7 +147,8 @@
             <div class="column is-half">
               <control-input 
                 label="Egész szobák"
-                v-model="properties.rooms"
+                type="number"
+                v-model="properties.data.rooms"
                 placeholder="Szobák száma"
                 suffix="szoba"
               ></control-input>
@@ -156,7 +157,8 @@
             <div class="column is-half">
               <control-input 
                 label="Fél szobák"
-                v-model="properties.rooms"
+                type="number"
+                v-model="properties.data.halfrooms"
                 placeholder="Szobák száma"
                 suffix="szoba"
               ></control-input>
@@ -164,7 +166,7 @@
 
             <div class="column is-half">
               <control-select
-                v-model="properties.address.district"
+                v-model="properties.data.material"
                 label="Építőanyag típusa"
                 placeholder="Kérem válassz"
               >
@@ -174,7 +176,7 @@
 
             <div class="column is-half">
               <control-select
-                v-model="properties.address.district"
+                v-model="properties.data.comfort"
                 label="Komfort"
                 placeholder="Kérem válassz"
               >
@@ -417,6 +419,7 @@ export default {
           type: 'eladó'
         },
         address: {},
+        data: {},
         description: ''
       },
       properties: {},

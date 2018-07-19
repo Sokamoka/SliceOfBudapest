@@ -17,12 +17,12 @@
 </template>
 
 <script>
-import auth from '@/auth';
+// import auth from '@/auth';
 
 export default {
   name: 'auth',
   mounted() {
-    auth.authForm('#firebaseui-auth-container');
+    // auth.authForm('#firebaseui-auth-container');
   }
 };
 </script>

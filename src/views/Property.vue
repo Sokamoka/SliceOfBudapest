@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <section class="hero is-primary">
       <div class="hero-body">
           <div class="container">
@@ -12,13 +12,15 @@
           </div>
       </div>
     </section>
-    <section>
-      <div class="content">
-        <ul>
-          <li v-for="item in property" :key="item['.key']">{{ item }}</li>
-        </ul>
-      </div>
-    </section>
+    <div class="container">
+      <section>
+        <div class="content">
+          <ul>
+            <li v-for="item in property" :key="item['.key']">{{ item }}</li>
+          </ul>
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 

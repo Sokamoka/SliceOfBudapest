@@ -2,7 +2,7 @@
   <div class="navigation">
     <nav class="navbar container">
       <div class="navbar-brand">
-        <router-link class="navbar-item" :to="{ name: 'home' }">
+        <router-link class="navbar-item" :to="{ name: 'home', params: { locale: $i18n.locale } }">
           Slice Of Budapest
         </router-link>
         <div :class="{ 'navbar-burger burger': true, 'is-active': isMenuVisible }" data-target="navbarTop" @click="menuToggle">
@@ -14,23 +14,26 @@
 
       <div id="navbarTop" :class="{ 'navbar-menu': true, 'is-active': isMenuVisible }">
         <div class="navbar-start">
-          <router-link class="navbar-item" :to="{ name: 'home' }">
-            List
+          <router-link class="navbar-item" :to="{ name: 'dashboard', params: { locale: $i18n.locale } }" v-if="isLoggedIn">
+            Dashboard
           </router-link>
-          <router-link class="navbar-item" to="/add" v-show="isLoggedIn">
+          <router-link class="navbar-item" :to="{ name: 'home', params: { locale: $i18n.locale } }" v-if="isLoggedIn">
+            Properties
+          </router-link>
+          <router-link class="navbar-item" :to="{name: 'add', params: { locale: $i18n.locale }}" v-if="isLoggedIn">
             Add Item
           </router-link>
         </div>
         <div class="navbar-end">
-          <div class="navbar-item has-dropdown is-hoverable" v-show="isLoggedIn">
+          <div class="navbar-item has-dropdown is-hoverable" v-if="isLoggedIn">
             <a class="navbar-link" href="#">
               <avatar
-                :username="displayName"
-                :src="getAvatarImg"
+                :username="user.name"
+                :src="user.image"
                 :size="32"
                 background-color="#303030"
               ></avatar>
-              {{ displayName }}
+              {{ user.name }}
             </a>
             <div class="navbar-dropdown is-boxed">
               <a class="navbar-item" @click.prevent="setLocale('hu')">
@@ -48,17 +51,23 @@
               </a>
             </div>
           </div>
-          <router-link class="navbar-item" :to="{ name: 'auth' }" v-show="!isLoggedIn">
+          <a 
+            v-if="!isLoggedIn"
+            href="#"
+            class="navbar-item"
+            @click.prevent="login"
+          >
             Sign In
-          </router-link>
+          </a>
         </div>
       </div>
     </nav>
   </div>
 </template>
 <script>
+import { mapActions, mapState } from 'vuex';
 import { Validator } from 'vee-validate';
-import auth from '@/auth';
+// import auth from '@/auth';
 import Avatar from 'vue-avatar';
 
 export default {
@@ -71,27 +80,29 @@ export default {
     };
   },
   computed: {
-    isLoggedIn() {
-      return this.user ? true : false;
-    },
-    user() {
-      return this.$store.getters['user/user'];
-    },
-    displayName() {
-      return this.user
-        ? this.user.displayName
-          ? this.user.displayName
-          : ''
-        : '';
-    },
-    getAvatarImg() {
-      return this.user ? this.user.photoURL : '';
-    }
+    ...mapState('auth', ['user', 'isLoggedIn'])
+    // isLoggedIn() {
+    //   return this.user ? true : false;
+    // },
+    // user() {
+    //   return this.$store.getters['user/user'];
+    // },
+    // displayName() {
+    //   return this.user
+    //     ? this.user.displayName
+    //       ? this.user.displayName
+    //       : ''
+    //     : '';
+    // },
+    // getAvatarImg() {
+    //   return this.user ? this.user.photoURL : '';
+    // }
   },
   methods: {
-    logout() {
-      auth.logout();
-    },
+    ...mapActions('auth', ['login', 'logout']),
+    // logout() {
+    //   auth.logout();
+    // },
     menuToggle() {
       this.isMenuVisible = !this.isMenuVisible;
     },

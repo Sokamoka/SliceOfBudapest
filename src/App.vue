@@ -9,7 +9,7 @@
 <script>
 import Navbar from './components/Navbar.vue';
 import pageFooter from './components/Footer.vue';
-import auth from '@/auth';
+// import auth from '@/auth';
 
 export default {
   name: 'app',
@@ -18,10 +18,10 @@ export default {
     pageFooter
   },
   created() {
-    this.$store.dispatch(
-      'properties/setPropertiesRef',
-      auth.getDB().ref('properties')
-    );
+    // this.$store.dispatch(
+    //   'properties/setPropertiesRef',
+    //   auth.getDB().ref('properties')
+    // );
   }
 };
 </script>

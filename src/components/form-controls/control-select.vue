@@ -34,7 +34,7 @@ export default {
   inject: ['parentValidator'],
   props: {
     value: {
-      type: String,
+      type: [Number, String],
       default: ''
     },
     name: {

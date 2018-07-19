@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import auth from '@/auth';
+// import auth from '@/auth';
+import { i18n } from './localization';
+// import store from '@/store';
 
 import Home from './views/Home.vue';
 // import About from './views/About.vue';
@@ -13,35 +15,45 @@ Vue.use(Router);
 
 const routes = [
   {
-    path: '/home',
+    path: '/',
     name: 'home',
-    component: Home
+    component: Home,
+    alias: '/:locale'
   },
+  // {
+  //   path: '/home',
+  //   name: 'home',
+  //   component: Home
+  // },
   {
-    path: '/auth',
+    path: '/:locale/auth',
     name: 'auth',
     component: Auth,
     meta: { guestOnly: true }
   },
   {
-    path: '/dashboard',
+    path: '/:locale/dashboard',
     name: 'dashboard',
     component: Dashboard,
     meta: { requireAuth: true }
   },
   {
-    path: '/add',
+    path: '/:locale/add',
     name: 'add',
     component: AddItem,
     meta: { requireAuth: true }
   },
   {
-    path: '/property/:id',
+    path: '/:locale/property/:id',
     name: 'property',
     component: Property,
     meta: { requireAuth: true }
   },
-  { path: '*', redirect: '/home' }
+  {
+    path: '/:locale/*',
+    name: 'not-found',
+    component: Home
+  }
 ];
 
 export const router = new Router({
@@ -50,11 +62,34 @@ export const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  const currentUser = auth.user();
-  const requireAuth = to.matched.some(record => record.meta.requireAuth);
-  const guestOnly = to.matched.some(record => record.meta.guestOnly);
+  setLocale(to);
+  // const currentUser = auth.user();
+  // const currentUser = store.getters['user/user'];
+  // const requireAuth = to.matched.some(record => record.meta.requireAuth);
+  // const guestOnly = to.matched.some(record => record.meta.guestOnly);
 
-  if (requireAuth && !currentUser) next('auth');
-  else if (guestOnly && currentUser) next('dashboard');
-  else next();
+  // console.log('Router - currentUser:', currentUser, to);
+
+  // if (requireAuth && !currentUser)
+  //   next({ name: 'auth', params: { locale: i18n.locale } });
+  // // else if (guestOnly && currentUser) next('dashboard');
+  // else next();
+  next();
 });
+
+const setLocale = to => {
+  let locale = '',
+    localeUrlSegment = to.path.split('/'),
+    currentLocale = i18n.locale;
+
+  // Get locale from path
+  localeUrlSegment.shift();
+  locale = localeUrlSegment[0];
+
+  // Locale fallback
+  if (locale === '') locale = currentLocale;
+
+  // Set locale
+  i18n.locale = locale;
+  to.params.locale = locale;
+};
