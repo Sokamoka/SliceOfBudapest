@@ -43,9 +43,6 @@ export default {
   data: () => ({}),
   computed: {
     ...mapState('properties', ['properties'])
-    // getProperties() {
-    //   return this.$store.getters['properties/getProperties'];
-    // }
   },
   mounted() {
     this.init();

@@ -399,12 +399,12 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import ControlInput from '../components/form-controls/control-input';
 import ControlSelect from '../components/form-controls/control-select';
 import ControlTextarea from '../components/form-controls/control-textarea';
 import { PROPERTIES_TYPE, DESCRIPTION_LENGTH } from '../constants';
-import db from '@/firebase/db';
+// import db from '@/firebase/db';
 
 export default {
   name: 'AddItem',
@@ -449,13 +449,12 @@ export default {
     this.properties = Object.assign({}, this.defaults);
   },
   methods: {
-    submitProperty() {
+    ...mapActions('properties', ['addProperty']),
+    async submitProperty() {
       this.$validator.validate().then(result => {
         if (result) {
           console.log('VALID!');
-          db.collection('properties')
-            .doc(this.user.id)
-            .set(this.properties);
+          this.addProperty(this.properties);
           this.properties = Object.assign({}, this.defaults);
           this.$validator.reset();
         }

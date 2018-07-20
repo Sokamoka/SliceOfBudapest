@@ -7,8 +7,8 @@
     </div>
     <div class="card-content">
       <div class="content">
-        {{ item.address }}
-        <router-link :to="{ name: 'property', params: { locale: $i18n.locale, id: item['.key'] }}">GO</router-link>
+        {{ item.address.city }}, {{ item.address.street }}
+        <router-link :to="{ name: 'property', params: { locale: $i18n.locale, id: item.id }}">GO</router-link>
       </div>
     </div>
   </div>
