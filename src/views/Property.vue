@@ -16,7 +16,7 @@
       <section>
         <div class="content">
           <ul>
-            <li v-for="item in property" :key="item['.key']">{{ item }}</li>
+            <li v-for="item in getProperty" :key="item.id">{{ item }}</li>
           </ul>
         </div>
       </section>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-// import auth from '@/auth';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   // data() {
@@ -34,17 +34,16 @@ export default {
   //   };
   // },
   computed: {
-    property() {
-      return this.$store.getters['properties/getProperty'];
-    }
+    ...mapGetters('properties', ['getProperty'])
+    // property() {
+    //   return this.$store.getters['properties/getProperty'];
+    // }
   },
   created() {
-    // console.log(this.$route.params.id);
-    // this.property = auth.getDB().ref('properties/' + this.$route.params.id);
-    // this.$store.dispatch(
-    //   'properties/setPropertyRef',
-    //   auth.getDB().ref(`properties/${this.$route.params.id}`)
-    // );
+    this.initProperty(this.$route.params.id);
+  },
+  methods: {
+    ...mapActions('properties', ['initProperty'])
   }
 };
 </script>

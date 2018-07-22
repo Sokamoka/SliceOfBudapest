@@ -3,15 +3,17 @@ import App from './App.vue';
 import { router } from './router';
 import { i18n } from './localization';
 import store from '@/store';
-
-// import auth from '@/auth';
-
 import './assets/styles/main.scss';
 
 /* eslint-disable */
 import firebase from './firebase/firebase';
 import auth from './firebase/auth';
 /* eslint-enable */
+
+import Toasted from 'vue-toasted';
+Vue.use(Toasted, {
+  position: 'top-center'
+});
 
 Vue.config.productionTip = false;
 

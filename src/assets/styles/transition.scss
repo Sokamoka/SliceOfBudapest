@@ -1,0 +1,12 @@
+.step-transition {
+  &-enter-active,
+  &-leave-active {
+    transition: all .3s ease;
+  }
+
+  &-enter,
+  &-leave-to {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+}

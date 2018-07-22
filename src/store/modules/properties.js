@@ -37,6 +37,13 @@ export default {
     init: firebaseAction(({ bindFirebaseRef }) => {
       bindFirebaseRef('properties', db.collection('properties'));
       console.log('INIT');
+    }),
+    initProperty: firebaseAction(({ bindFirebaseRef }, id) => {
+      console.log('getProperty');
+      bindFirebaseRef(
+        'property',
+        db.collection('properties').where('id', '==', id)
+      );
     })
   }
 };
