@@ -7,6 +7,7 @@ import auth from './modules/auth';
 import user from './modules/user';
 // import user from './modules/user';
 import properties from './modules/properties';
+import property from './modules/add-property';
 
 Vue.use(Vuex);
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
   modules: {
     auth,
     user,
-    properties
+    properties,
+    property
   }
 });

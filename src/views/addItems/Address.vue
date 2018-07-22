@@ -111,7 +111,7 @@ export default {
   methods: {
     async clickNext() {
       const result = await this.$validator.validate();
-      if (result) this.$emit('input', this.address);
+      if (!result) this.$emit('input', this.address);
     },
     clickPrev() {
       this.$emit('step-prev');

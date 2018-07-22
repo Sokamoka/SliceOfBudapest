@@ -6,7 +6,7 @@
 
         <div class="column is-half">
           <control-select
-            v-model="properties.type"
+            v-model="type"
             label="Eladó / Kiadó"
           >
             <option value="eladó">Eladó</option>
@@ -16,7 +16,7 @@
 
         <div class="column is-half">
           <control-select
-            v-model="properties.propertiesType"
+            v-model="propertiesType"
             label="Típus"
             placeholder="Kérem válassz"
             name="basePropertiesType"
@@ -30,7 +30,7 @@
           <control-input
             label="Eladási ár"
             type="number"
-            v-model="properties.priceOnOffer"
+            v-model="priceOnOffer"
             placeholder="Eladási ár"
             suffix="milió Ft"
             name="basePriceOnOffer"
@@ -41,7 +41,7 @@
         <div v-if="!isOnOffer" class="column is-half">
           <control-input
             label="Kiadási ár"
-            v-model="properties.priceOnRent"
+            v-model="priceOnRent"
             type="number"
             placeholder="Kiadási ár"
             suffix="ezer Ft / hó"
@@ -53,8 +53,8 @@
         <div class="column is-half">
           <control-input
             label="Méret"
-            v-model="properties.size"
-            :placeholder="$t('properties.size')"
+            v-model="size"
+            :placeholder="$t('size')"
             :data-vv-as="$t('properties.size')"
             suffix="m<sup>2</sup>"
             type="number"
@@ -80,9 +80,15 @@
   </div>
 </template>
 <script>
+import { createHelpers } from 'vuex-map-fields';
 import { PROPERTIES_TYPE } from '../../constants';
 import ControlInput from '@/components/form-controls/control-input';
 import ControlSelect from '@/components/form-controls/control-select';
+
+const { mapFields } = createHelpers({
+  getterType: 'getBaseField',
+  mutationType: 'updateBaseField'
+});
 
 export default {
   components: {
@@ -93,9 +99,6 @@ export default {
     return { parentValidator: this.$validator };
   },
   props: {
-    value: {
-      type: Object
-    },
     step: {
       type: Number
     },
@@ -107,35 +110,44 @@ export default {
     }
   },
   data() {
-    return {
-      defaults: {
-        type: 'eladó',
-        propertiesType: ''
-      },
-      properties: {}
-    };
+    return {};
   },
   computed: {
+    ...mapFields('property', [
+      'type',
+      'propertiesType',
+      'priceOnOffer',
+      'priceOnRent',
+      'size'
+    ]),
+    // property: {
+    //   get() {
+    //     return this.$store.getters['property/base'];
+    //   },
+    //   set(value) {
+    //     console.log(value);
+    //     this.$store.dispatch('property/base', {
+    //       base: value
+    //     });
+    //   }
+    // },
     propertiesTypes() {
       return PROPERTIES_TYPE;
     },
     isOnOffer() {
-      return this.properties.type === 'eladó';
+      return this.type === 'eladó';
     },
     currentStep() {
       return this.step + 1;
     }
   },
-  created() {
-    this.properties = this.value
-      ? this.value
-      : Object.assign({}, this.defaults);
-  },
   methods: {
     async clickNext() {
       const result = await this.$validator.validate();
       // console.log('RESULT:', result);
-      if (result) this.$emit('input', this.properties);
+      if (result) {
+        this.$emit('step-next');
+      }
     }
   }
 };

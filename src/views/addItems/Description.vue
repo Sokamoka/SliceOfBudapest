@@ -41,6 +41,7 @@
   </div>
 </template>
 <script>
+// import { mapGetters, mapActions } from 'vuex';
 import { DESCRIPTION_LENGTH } from '@/constants';
 import ControlTextarea from '@/components/form-controls/control-textarea';
 
@@ -52,9 +53,6 @@ export default {
     return { parentValidator: this.$validator };
   },
   props: {
-    value: {
-      type: String
-    },
     step: {
       type: Number
     },
@@ -67,11 +65,20 @@ export default {
   },
   data() {
     return {
-      description: '',
       descriptionLength: DESCRIPTION_LENGTH
     };
   },
   computed: {
+    description: {
+      get() {
+        return this.$store.getters['property/description'];
+      },
+      set(value) {
+        this.$store.dispatch('property/description', {
+          description: value
+        });
+      }
+    },
     descriptionHelpText() {
       const remainder = DESCRIPTION_LENGTH - this.description.length;
       return remainder > 0
@@ -79,15 +86,10 @@ export default {
         : '';
     }
   },
-  created() {
-    this.description = this.value ? this.value : '';
-  },
   methods: {
     async clickNext() {
       const result = await this.$validator.validate();
-      console.log('RESULT:', result);
-      if (!result) {
-        this.$emit('input', this.description);
+      if (result) {
         this.$emit('on-complete');
       }
     },

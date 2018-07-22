@@ -19,11 +19,11 @@
       <transition name="step-transition" mode="out-in">
         <component
           :is="currentStepComponent"
-          v-model="componentData"
           :step="currentStep"
           :max-step="maxStep"
           :button-labels="currentButtonLabels"
           :is-on-offer="isOnOffer"
+          @step-next="stepNext"
           @step-prev="stepPrev"
           @on-complete="submitProperty"
         ></component>
@@ -115,6 +115,9 @@ export default {
       this.$toasted.show('Properties Added!').goAway(3000);
       this.properties = {};
       this.currentStep = 0;
+    },
+    stepNext() {
+      this.currentStep++;
     },
     stepPrev() {
       this.currentStep--;
