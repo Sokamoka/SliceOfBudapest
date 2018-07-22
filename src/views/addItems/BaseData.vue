@@ -20,6 +20,7 @@
             label="Típus"
             placeholder="Kérem válassz"
             name="basePropertiesType"
+            data-vv-as="Típus"
             v-validate="{required: true}"
           >
             <option v-for="option in propertiesTypes" :key="option.value" :value="option">{{ option }}</option>
@@ -31,6 +32,7 @@
             label="Eladási ár"
             type="number"
             v-model="priceOnOffer"
+            key="priceOnOffer"
             placeholder="Eladási ár"
             suffix="milió Ft"
             name="basePriceOnOffer"
@@ -42,6 +44,7 @@
           <control-input
             label="Kiadási ár"
             v-model="priceOnRent"
+            key="priceOnRent"
             type="number"
             placeholder="Kiadási ár"
             suffix="ezer Ft / hó"
@@ -54,7 +57,7 @@
           <control-input
             label="Méret"
             v-model="size"
-            :placeholder="$t('size')"
+            :placeholder="$t('properties.size')"
             :data-vv-as="$t('properties.size')"
             suffix="m<sup>2</sup>"
             type="number"
@@ -69,10 +72,13 @@
         <p class="control">
           <button
             type="button"
-            class="button is-success is-medium"
+            class="button is-primary is-medium"
             @click="clickNext"
           >
-            {{ buttonLabels.next }}
+            <span>{{ buttonLabels.next }}</span>
+            <span class="icon is-small">
+              <i class="fas fa-arrow-right"></i>
+            </span>
           </button>
         </p>
       </div>
@@ -120,17 +126,6 @@ export default {
       'priceOnRent',
       'size'
     ]),
-    // property: {
-    //   get() {
-    //     return this.$store.getters['property/base'];
-    //   },
-    //   set(value) {
-    //     console.log(value);
-    //     this.$store.dispatch('property/base', {
-    //       base: value
-    //     });
-    //   }
-    // },
     propertiesTypes() {
       return PROPERTIES_TYPE;
     },
@@ -144,10 +139,7 @@ export default {
   methods: {
     async clickNext() {
       const result = await this.$validator.validate();
-      // console.log('RESULT:', result);
-      if (result) {
-        this.$emit('step-next');
-      }
+      if (result) this.$emit('step-next');
     }
   }
 };

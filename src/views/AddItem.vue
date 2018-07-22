@@ -22,7 +22,6 @@
           :step="currentStep"
           :max-step="maxStep"
           :button-labels="currentButtonLabels"
-          :is-on-offer="isOnOffer"
           @step-next="stepNext"
           @step-prev="stepPrev"
           @on-complete="submitProperty"
@@ -50,7 +49,6 @@ export default {
   },
   data() {
     return {
-      properties: {},
       steps: ['BaseData', 'Address', 'MoreDetails', 'Description'],
       stepObjects: ['base', 'address', 'details', 'description'],
       buttonLabels: [
@@ -79,27 +77,9 @@ export default {
   },
   computed: {
     ...mapState('auth', ['user']),
-    // isOnOffer() {
-    //   console.log('xxx:', this.properties[this.stepObjects[0]]);
-    //   if (this.properties.base) {
-    //     return this.properties.base.type === 'eladó';
-    //   }
-    //   return true;
-    // },
+    ...mapState('property', ['property']),
     currentStepComponent() {
       return this.steps[this.currentStep];
-    },
-    componentData: {
-      get() {
-        return this.properties[this.stepObjects[this.currentStep]];
-      },
-      set(value) {
-        if (value.type) {
-          this.isOnOffer = value.type === 'eladó';
-        }
-        this.properties[this.stepObjects[this.currentStep]] = value;
-        if (this.currentStep < this.maxStep - 1) this.currentStep++;
-      }
     },
     maxStep() {
       return this.steps.length;
@@ -110,11 +90,12 @@ export default {
   },
   methods: {
     ...mapActions('properties', ['addProperty']),
+    ...mapActions('property', ['resetStateProperty']),
     async submitProperty() {
-      // this.addProperty(this.properties);
+      this.addProperty(this.property);
       this.$toasted.show('Properties Added!').goAway(3000);
-      this.properties = {};
       this.currentStep = 0;
+      this.resetStateProperty();
     },
     stepNext() {
       this.currentStep++;

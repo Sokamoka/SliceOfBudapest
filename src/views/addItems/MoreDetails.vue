@@ -251,16 +251,22 @@
             class="button is-light is-medium"
             @click="clickPrev"
           >
-            {{ buttonLabels.prev }}
+            <span class="icon is-small">
+              <i class="fas fa-arrow-left"></i>
+            </span>
+            <span>{{ buttonLabels.prev }}</span>
           </button>
         </p>
         <p class="control">
           <button
             type="button"
-            class="button is-success is-medium"
+            class="button is-primary is-medium"
             @click="clickNext"
           >
-            {{ buttonLabels.next }}
+            <span>{{ buttonLabels.next }}</span>
+            <span class="icon is-small">
+              <i class="fas fa-arrow-right"></i>
+            </span>
           </button>
         </p>
       </div>
@@ -268,6 +274,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import { PROPERTIES_TYPE } from '@/constants';
 import ControlInput from '@/components/form-controls/control-input';
 import ControlSelect from '@/components/form-controls/control-select';
@@ -281,9 +288,6 @@ export default {
     return { parentValidator: this.$validator };
   },
   props: {
-    value: {
-      type: Object
-    },
     step: {
       type: Number
     },
@@ -292,18 +296,13 @@ export default {
     },
     buttonLabels: {
       type: Object
-    },
-    isOnOffer: {
-      type: Boolean,
-      default: true
     }
   },
   data() {
-    return {
-      details: {}
-    };
+    return {};
   },
   computed: {
+    ...mapGetters('property', ['isOnOffer']),
     propertiesTypes() {
       return PROPERTIES_TYPE;
     }
@@ -314,8 +313,8 @@ export default {
   methods: {
     async clickNext() {
       const result = await this.$validator.validate();
-      console.log('RESULT:', result);
-      if (result) this.$emit('input', this.details);
+      // console.log('RESULT:', result);
+      if (result) this.$emit('step-next');
     },
     clickPrev() {
       this.$emit('step-prev');

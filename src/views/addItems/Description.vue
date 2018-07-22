@@ -24,7 +24,10 @@
             class="button is-light is-medium"
             @click="clickPrev"
           >
-            {{ buttonLabels.prev }}
+            <span class="icon is-small">
+              <i class="fas fa-arrow-left"></i>
+            </span>
+            <span>{{ buttonLabels.prev }}</span>
           </button>
         </p>
         <p class="control">
@@ -33,7 +36,10 @@
             class="button is-success is-medium"
             @click="clickNext"
           >
-            {{ buttonLabels.next }}
+            <span>{{ buttonLabels.next }}</span>
+            <span class="icon is-small">
+              <i class="fas fa-save"></i>
+            </span>
           </button>
         </p>
       </div>

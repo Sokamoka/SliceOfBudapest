@@ -6,7 +6,7 @@
         <div class="column is-half">
           <control-input
             label="Város"
-            v-model="address.city"
+            v-model="city"
             placeholder="Város"
             name="addressCity"
             v-validate="{required: true}"
@@ -15,10 +15,12 @@
 
         <div class="column is-half">
           <control-select
-            v-model="address.district"
+            v-model="district"
             label="Kerület"
             placeholder="Kérem válassz"
             :disabled="isCapital"
+            name="addressDistrict"
+            v-validate="{required: true}"
           >
             <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
           </control-select>
@@ -27,7 +29,7 @@
         <div class="column is-half">
           <control-input
             label="Utca"
-            v-model="address.street"
+            v-model="street"
             placeholder="utca"
             name="addressStreet"
             v-validate="{required: true}"
@@ -37,7 +39,7 @@
         <div class="column is-half">
           <control-input
             label="Házszám"
-            v-model="address.number"
+            v-model="number"
             placeholder="Házszám"
           ></control-input>
         </div>
@@ -51,16 +53,22 @@
             class="button is-light is-medium"
             @click="clickPrev"
           >
-            {{ buttonLabels.prev }}
+            <span class="icon is-small">
+              <i class="fas fa-arrow-left"></i>
+            </span>
+            <span>{{ buttonLabels.prev }}</span>
           </button>
         </p>
         <p class="control">
           <button
             type="button"
-            class="button is-success is-medium"
+            class="button is-primary is-medium"
             @click="clickNext"
           >
-            {{ buttonLabels.next }}
+            <span>{{ buttonLabels.next }}</span>
+            <span class="icon is-small">
+              <i class="fas fa-arrow-right"></i>
+            </span>
           </button>
         </p>
       </div>
@@ -68,8 +76,14 @@
   </div>
 </template>
 <script>
+import { createHelpers } from 'vuex-map-fields';
 import ControlInput from '@/components/form-controls/control-input';
 import ControlSelect from '@/components/form-controls/control-select';
+
+const { mapFields } = createHelpers({
+  getterType: 'getAddressField',
+  mutationType: 'updateAddressField'
+});
 
 export default {
   components: {
@@ -80,9 +94,6 @@ export default {
     return { parentValidator: this.$validator };
   },
   props: {
-    value: {
-      type: Object
-    },
     step: {
       type: Number
     },
@@ -99,10 +110,9 @@ export default {
     };
   },
   computed: {
+    ...mapFields('property', ['city', 'district', 'street', 'number']),
     isCapital() {
-      return this.address.city
-        ? this.address.city.toLowerCase() !== 'budapest'
-        : true;
+      return this.city.toLowerCase() !== 'budapest';
     }
   },
   created() {
@@ -111,7 +121,7 @@ export default {
   methods: {
     async clickNext() {
       const result = await this.$validator.validate();
-      if (!result) this.$emit('input', this.address);
+      if (result) this.$emit('step-next');
     },
     clickPrev() {
       this.$emit('step-prev');
