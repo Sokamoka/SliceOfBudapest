@@ -87,6 +87,7 @@
 </template>
 <script>
 import { createHelpers } from 'vuex-map-fields';
+import { mapGetters } from 'vuex';
 import { PROPERTIES_TYPE } from '../../constants';
 import ControlInput from '@/components/form-controls/control-input';
 import ControlSelect from '@/components/form-controls/control-select';
@@ -119,6 +120,7 @@ export default {
     return {};
   },
   computed: {
+    ...mapGetters('property', ['isOnOffer']),
     ...mapFields('property', [
       'type',
       'propertiesType',
@@ -129,9 +131,9 @@ export default {
     propertiesTypes() {
       return PROPERTIES_TYPE;
     },
-    isOnOffer() {
-      return this.type === 'eladó';
-    },
+    // isOnOffer() {
+    //   return this.type === 'eladó';
+    // },
     currentStep() {
       return this.step + 1;
     }

@@ -89,8 +89,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions('properties', ['addProperty']),
-    ...mapActions('property', ['resetStateProperty']),
+    // ...mapActions('properties', ['addProperty']),
+    ...mapActions('property', ['addProperty', 'resetStateProperty']),
     async submitProperty() {
       this.addProperty(this.property);
       this.$toasted.show('Properties Added!').goAway(3000);
@@ -106,8 +106,12 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="scss">
 .section-progress {
   margin-top: 30px;
+
+  .progress::-webkit-progress-value {
+    transition: width 0.5s ease;
+  }
 }
 </style>

@@ -1,10 +1,13 @@
+import firebase from '@/firebase/firebase';
+import db from '@/firebase/db';
 import { getField, updateField } from 'vuex-map-fields';
+import { PROPERTY_ONSALE_KEY } from '../../constants';
 
 const getDefaultState = () => {
   return {
     property: {
       base: {
-        type: 'eladó',
+        type: PROPERTY_ONSALE_KEY,
         propertiesType: '',
         priceOnOffer: null,
         priceOnRent: null,
@@ -28,9 +31,7 @@ const getters = {
   description: state => state.property.description,
   getBaseField: state => getField(state.property.base),
   getAddressField: state => getField(state.property.address),
-  isOnOffer(state) {
-    return state.property.base.type === 'eladó';
-  }
+  isOnOffer: state => state.property.base.type === PROPERTY_ONSALE_KEY
 };
 
 const mutations = {
@@ -49,6 +50,21 @@ const mutations = {
 };
 
 const actions = {
+  async addProperty({ state }, property) {
+    const result = db.collection('properties').doc();
+    console.log('result:', result, property, state);
+    property.id = result.id;
+    property.created_at = firebase.firestore.FieldValue.serverTimestamp();
+    property.updated_at = firebase.firestore.FieldValue.serverTimestamp();
+    try {
+      await db
+        .collection('properties')
+        .doc(property.id)
+        .set(property);
+    } catch (error) {
+      console.error(error);
+    }
+  },
   resetStateProperty({ commit }) {
     commit('resetState');
   },
