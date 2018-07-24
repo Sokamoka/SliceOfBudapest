@@ -16,7 +16,7 @@
       <section class="section-progress">
         <progress class="progress is-primary is-large" :value="currentStep+1" :max="maxStep">1/5</progress>
       </section>
-      <transition name="step-transition" mode="out-in">
+      <transition :name="taransitionDirection" mode="out-in">
         <component
           :is="currentStepComponent"
           :step="currentStep"
@@ -36,6 +36,7 @@ import { mapState, mapActions } from 'vuex';
 
 import BaseData from './addItems/BaseData';
 import Address from './addItems/Address';
+import AddImages from './addItems/AddImages';
 import MoreDetails from './addItems/MoreDetails';
 import Description from './addItems/Description';
 
@@ -44,28 +45,35 @@ export default {
   components: {
     BaseData,
     Address,
+    AddImages,
     MoreDetails,
     Description
   },
   data() {
     return {
-      steps: ['BaseData', 'Address', 'MoreDetails', 'Description'],
+      steps: ['BaseData', 'Address', 'AddImages', 'MoreDetails', 'Description'],
+      transitionDirections: ['step-next-transition', 'step-prev-transition'],
+      taransitionDirection: null,
       stepObjects: ['base', 'address', 'details', 'description'],
       buttonLabels: [
         {
           next: 'Cím megadása'
         },
         {
-          next: 'További adatok megadása',
-          prev: 'Alapadatok megadása'
+          prev: 'Alapadatok megadása',
+          next: 'Képek feltöltésea'
         },
         {
-          next: 'Leírás megadása',
-          prev: 'Cím megadása'
+          prev: 'Cím megadása',
+          next: 'További adatok megadása'
         },
         {
-          next: 'Mentés',
-          prev: 'További adatok megadása'
+          prev: 'Képek feltöltése',
+          next: 'Leírás megadása'
+        },
+        {
+          prev: 'További adatok megadása',
+          next: 'Mentés'
         }
       ],
       currentStep: 0,
@@ -98,9 +106,11 @@ export default {
       this.resetStateProperty();
     },
     stepNext() {
+      this.taransitionDirection = this.transitionDirections[0];
       this.currentStep++;
     },
     stepPrev() {
+      this.taransitionDirection = this.transitionDirections[1];
       this.currentStep--;
     }
   }

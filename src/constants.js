@@ -18,3 +18,32 @@ export const PROPERTY_MATERIAL_TYPE = [
   'Ytong',
   'Vályog'
 ];
+
+export const PROPERTY_CONFORTS = [
+  'Luxus',
+  'Összkomfort',
+  'Dupla komfort',
+  'Komfortos',
+  'Félkomfort',
+  'Komfort nélküli'
+];
+
+export const PROPERTY_CONDITIONS = [
+  'Újszerű',
+  'Felújított',
+  'Új építésű',
+  'Jó állapotú',
+  'Közepes állapotú',
+  'Felújítandó'
+];
+
+export const PROPERTY_ENERGY = [
+  'AA+',
+  'AA',
+  'BB',
+  'CC',
+  'DD',
+  'EE',
+  'FF',
+  'GG'
+];

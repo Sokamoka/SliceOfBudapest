@@ -7,8 +7,9 @@
         <div v-if="!isOnOffer" class="column is-half">
           <control-input
             label="Minimum bérlési idő"
-            v-model="details.rooms"
-            placeholder="Szobák száma"
+            type="number"
+            v-model="minRentTime"
+            placeholder="Időtartam"
             suffix="hónap"
           ></control-input>
         </div>
@@ -16,7 +17,8 @@
         <div v-if="!isOnOffer" class="column is-half">
           <control-input
             label="Kaució"
-            v-model="details.rooms"
+            type="number"
+            v-model="cautions"
             placeholder="Kaució"
             suffix="hónap"
           ></control-input>
@@ -26,7 +28,7 @@
           <control-input 
             label="Egész szobák"
             type="number"
-            v-model="details.rooms"
+            v-model="rooms"
             placeholder="Szobák száma"
             suffix="szoba"
           ></control-input>
@@ -36,55 +38,65 @@
           <control-input 
             label="Fél szobák"
             type="number"
-            v-model="details.halfrooms"
+            v-model="halfrooms"
             placeholder="Szobák száma"
             suffix="szoba"
           ></control-input>
         </div>
 
         <div class="column is-half">
+          <control-input 
+            label="Telek mérete"
+            type="number"
+            v-model="groundSize"
+            placeholder="Telek mérete"
+            suffix="m2"
+          ></control-input>
+        </div>
+
+        <div class="column is-half">
           <control-select
-            v-model="details.material"
+            v-model="material"
             label="Építőanyag típusa"
             placeholder="Kérem válassz"
           >
-            <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+            <option v-for="types in materialTypes" :key="types" :value="types">{{ types }}</option>
           </control-select>
         </div>
 
         <div class="column is-half">
           <control-select
-            v-model="details.comfort"
+            v-model="comfort"
             label="Komfort"
             placeholder="Kérem válassz"
           >
-            <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+            <option v-for="type in comfortTypes" :key="type" :value="type">{{ type }}</option>
           </control-select>
         </div>
 
         <div class="column is-half">
           <control-select
-            v-model="details.district"
+            v-model="condition"
             label="Jelenlegi állapot"
             placeholder="Kérem válassz"
           >
-            <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+            <option v-for="type in conditionTypes" :key="type" :value="type">{{ type }}</option>
           </control-select>
         </div>
 
         <div class="column is-half">
           <control-select
-            v-model="details.district"
+            v-model="energy"
             label="Energiatanúsítvány"
             placeholder="Kérem válassz"
           >
-            <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+            <option v-for="type in energyTypes" :key="type" :value="type">{{ type }}</option>
           </control-select>
         </div>
 
         <div class="column is-half">
           <control-select
-            v-model="details.district"
+            v-model="floor"
             label="Emelet"
             placeholder="Kérem válassz"
           >
@@ -94,7 +106,17 @@
 
         <div class="column is-half">
           <control-select
-            v-model="details.district"
+            v-model="elevator"
+            label="Lift"
+            placeholder="Kérem válassz"
+          >
+            <option v-for="n in 23" :key="n" :value="n">{{ n }}.</option>
+          </control-select>
+        </div>
+
+        <div class="column is-half">
+          <control-select
+            v-model="balcony"
             label="Erkély típus"
             placeholder="Kérem válassz"
           >
@@ -104,7 +126,7 @@
 
         <div class="column is-half">
           <control-select
-            v-model="details.district"
+            v-model="toiletWithBath"
             label="WC és Fürdő"
             placeholder="Kérem válassz"
           >
@@ -114,7 +136,7 @@
 
         <div class="column is-half">
           <control-select
-            v-model="details.district"
+            v-model="parking"
             label="Parkolási lehetőségek"
             placeholder="Kérem válassz"
           >
@@ -124,7 +146,7 @@
 
         <div class="column is-half">
           <control-select
-            v-model="details.district"
+            v-model="innerHeight"
             label="Belmagasság"
             placeholder="Kérem válassz"
           >
@@ -134,7 +156,7 @@
 
         <div class="column is-half">
           <control-select
-            v-model="details.district"
+            v-model="furnishing"
             label="Berendezés"
             placeholder="Kérem válassz"
           >
@@ -144,7 +166,7 @@
 
         <div class="column is-half">
           <control-select
-            v-model="details.district"
+            v-model="machinery"
             label="Gépesítés"
             placeholder="Kérem válassz"
           >
@@ -154,7 +176,7 @@
 
         <div class="column is-half">
           <control-select
-            v-model="details.district"
+            v-model="garden"
             label="Kertkapcsolatos"
             placeholder="Kérem válassz"
           >
@@ -165,7 +187,7 @@
 
         <div class="column is-half">
           <control-select
-            v-model="details.district"
+            v-model="generation"
             label="Generációs"
             placeholder="Kérem válassz"
           >
@@ -175,7 +197,7 @@
 
         <div class="column is-half">
           <control-select
-            v-model="details.district"
+            v-model="views"
             label="Kilátás"
             placeholder="Kérem válassz"
           >
@@ -185,7 +207,7 @@
 
         <div class="column is-half">
           <control-select
-            v-model="details.district"
+            v-model="direction"
             label="Tájolás"
             placeholder="Kérem válassz"
           >
@@ -195,7 +217,7 @@
 
         <div class="column is-half">
           <control-select
-            v-model="details.district"
+            v-model="noBaths"
             label="Fürdőszobák száma"
             placeholder="Kérem válassz"
           >
@@ -205,7 +227,7 @@
 
         <div class="column is-half">
           <control-select
-            v-model="details.district"
+            v-model="noToilets"
             label="Mellékhelyiségek száma"
             placeholder="Kérem válassz"
           >
@@ -215,7 +237,7 @@
 
         <div class="column is-half">
           <control-select
-            v-model="details.district"
+            v-model="heating"
             label="Fűtés"
             placeholder="Kérem válassz"
           >
@@ -226,7 +248,8 @@
         <div class="column is-half">
           <control-input 
             label="Építés éve"
-            v-model="details.rooms"
+            type="number"
+            v-model="built"
             placeholder="Építés éve"
           ></control-input>
         </div>
@@ -235,7 +258,7 @@
           <control-input 
             label="Épület szintjei"
             type="number"
-            v-model="details.rooms"
+            v-model="buildingLevels"
             placeholder="Épület szintjei"
             suffix="emelet"
           ></control-input>
@@ -275,9 +298,20 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import { PROPERTIES_TYPE } from '@/constants';
+import { createHelpers } from 'vuex-map-fields';
+import {
+  PROPERTY_MATERIAL_TYPE,
+  PROPERTY_CONFORTS,
+  PROPERTY_CONDITIONS,
+  PROPERTY_ENERGY
+} from '../../constants';
 import ControlInput from '@/components/form-controls/control-input';
 import ControlSelect from '@/components/form-controls/control-select';
+
+const { mapFields } = createHelpers({
+  getterType: 'getDetailsField',
+  mutationType: 'updateDetailsField'
+});
 
 export default {
   components: {
@@ -303,12 +337,46 @@ export default {
   },
   computed: {
     ...mapGetters('property', ['isOnOffer']),
-    propertiesTypes() {
-      return PROPERTIES_TYPE;
+    ...mapFields('property', [
+      'minRentTime',
+      'cautions',
+      'rooms',
+      'halfrooms',
+      'material',
+      'comfort',
+      'condition',
+      'energy',
+      'floor',
+      'elevator',
+      'balcony',
+      'toiletWithBath',
+      'parking',
+      'innerHeight',
+      'furnishing',
+      'machinery',
+      'garden',
+      'generation',
+      'views',
+      'direction',
+      'noBaths',
+      'noToilets',
+      'heating',
+      'built',
+      'buildingLevels',
+      'groundSize'
+    ]),
+    materialTypes() {
+      return PROPERTY_MATERIAL_TYPE;
+    },
+    comfortTypes() {
+      return PROPERTY_CONFORTS;
+    },
+    conditionTypes() {
+      return PROPERTY_CONDITIONS;
+    },
+    energyTypes() {
+      return PROPERTY_ENERGY;
     }
-  },
-  created() {
-    this.details = this.value ? this.value : {};
   },
   methods: {
     async clickNext() {

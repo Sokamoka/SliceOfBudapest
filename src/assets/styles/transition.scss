@@ -10,3 +10,33 @@
     transform: translateX(20px);
   }
 }
+.step-next-transition {
+  &-enter-active,
+  &-leave-active {
+    transition: all .3s ease;
+  }
+
+  &-enter {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  &-leave-to {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+}
+.step-prev-transition {
+  &-enter-active,
+  &-leave-active {
+    transition: all .3s ease;
+  }
+
+  &-enter {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  &-leave-to {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+}

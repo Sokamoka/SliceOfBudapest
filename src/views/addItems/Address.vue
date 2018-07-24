@@ -104,24 +104,16 @@ export default {
       type: Object
     }
   },
-  data() {
-    return {
-      address: {}
-    };
-  },
   computed: {
     ...mapFields('property', ['city', 'district', 'street', 'number']),
     isCapital() {
       return this.city.toLowerCase() !== 'budapest';
     }
   },
-  created() {
-    this.address = this.value ? this.value : {};
-  },
   methods: {
     async clickNext() {
       const result = await this.$validator.validate();
-      if (result) this.$emit('step-next');
+      if (!result) this.$emit('step-next');
     },
     clickPrev() {
       this.$emit('step-prev');

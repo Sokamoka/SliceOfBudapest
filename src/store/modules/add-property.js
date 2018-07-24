@@ -19,6 +19,34 @@ const getDefaultState = () => {
         street: '',
         number: null
       },
+      details: {
+        minRentTime: null,
+        cautions: null,
+        rooms: null,
+        halfrooms: null,
+        material: '',
+        comfort: '',
+        condition: '',
+        energy: '',
+        floor: '',
+        elevator: '',
+        balcony: '',
+        toiletWithBath: '',
+        parking: '',
+        innerHeight: '',
+        furnishing: '',
+        machinery: '',
+        garden: '',
+        generation: '',
+        views: '',
+        direction: '',
+        noBaths: '',
+        noToilets: '',
+        heating: '',
+        built: null,
+        buildingLevels: null,
+        groundSize: null
+      },
       description: ''
     }
   };
@@ -31,6 +59,7 @@ const getters = {
   description: state => state.property.description,
   getBaseField: state => getField(state.property.base),
   getAddressField: state => getField(state.property.address),
+  getDetailsField: state => getField(state.property.details),
   isOnOffer: state => state.property.base.type === PROPERTY_ONSALE_KEY
 };
 
@@ -44,6 +73,9 @@ const mutations = {
   updateAddressField(state, field) {
     updateField(state.property.address, field);
   },
+  updateDetailsField(state, field) {
+    updateField(state.property.details, field);
+  },
   description(state, data) {
     state.property['description'] = data.description;
   }
@@ -52,7 +84,7 @@ const mutations = {
 const actions = {
   async addProperty({ state }, property) {
     const result = db.collection('properties').doc();
-    console.log('result:', result, property, state);
+    console.log('result:', result, state);
     property.id = result.id;
     property.created_at = firebase.firestore.FieldValue.serverTimestamp();
     property.updated_at = firebase.firestore.FieldValue.serverTimestamp();
