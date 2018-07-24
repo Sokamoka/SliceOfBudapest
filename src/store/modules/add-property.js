@@ -48,7 +48,8 @@ const getDefaultState = () => {
         groundSize: null
       },
       description: ''
-    }
+    },
+    images: []
   };
 };
 
@@ -60,7 +61,8 @@ const getters = {
   getBaseField: state => getField(state.property.base),
   getAddressField: state => getField(state.property.address),
   getDetailsField: state => getField(state.property.details),
-  isOnOffer: state => state.property.base.type === PROPERTY_ONSALE_KEY
+  isOnOffer: state => state.property.base.type === PROPERTY_ONSALE_KEY,
+  images: state => state.images
 };
 
 const mutations = {
@@ -78,6 +80,9 @@ const mutations = {
   },
   description(state, data) {
     state.property['description'] = data.description;
+  },
+  updateImages(state, data) {
+    state.images = data;
   }
 };
 

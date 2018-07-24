@@ -29,10 +29,10 @@
         <section class="section">
           <figure 
             class="image is-128x128"
-            v-for="(img, index) in imageURLs"
+            v-for="(img, index) in images"
             :key="index"
           >
-            <img :src="img">
+            <img :src="img.dataURL">
           </figure>
         </section>
 
@@ -70,6 +70,7 @@
 </template>
 <script>
 // import { createHelpers } from 'vuex-map-fields';
+import merge from '@/utils/object/merge';
 import ControlInput from '@/components/form-controls/control-input';
 import ControlSelect from '@/components/form-controls/control-select';
 
@@ -99,11 +100,18 @@ export default {
   },
   data() {
     return {
-      imageFiles: [],
-      imageURLs: []
+      images: []
     };
   },
   computed: {},
+  created() {
+    this.images = this.$store.getters['property/images'];
+  },
+  watch: {
+    images() {
+      this.$store.commit('property/updateImages', this.images);
+    }
+  },
   methods: {
     async clickNext() {
       const result = await this.$validator.validate();
@@ -114,8 +122,7 @@ export default {
     },
     onFileSelected(event) {
       const files = event.target.files;
-      console.log(files);
-      this.imageFiles.push(files);
+      // console.log(files);
       for (let file of files) {
         this.setupReader(file);
       }
@@ -123,9 +130,16 @@ export default {
     setupReader(file) {
       const fileReader = new FileReader();
       fileReader.onload = event => {
-        this.imageURLs.push(event.target.result);
+        const imageObject = [
+          {
+            name: file.name,
+            file: file,
+            dataURL: event.target.result
+          }
+        ];
+        // this.images.push(imageObject);
+        this.images = merge(this.images, imageObject, 'name');
       };
-
       fileReader.readAsDataURL(file);
     }
   }
