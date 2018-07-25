@@ -15,7 +15,12 @@ export default {
     init: firebaseAction(({ bindFirebaseRef }) => {
       bindFirebaseRef(
         'properties',
-        db.collection('properties').orderBy('created_at', 'desc')
+        db.collection('properties').orderBy('created_at', 'desc'),
+        {
+          readyCallback: () => {
+            console.log('Ready!');
+          }
+        }
       );
     }),
     initProperty: firebaseAction(({ bindFirebaseRef }, id) => {

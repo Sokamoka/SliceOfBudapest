@@ -1,5 +1,6 @@
 import firebase from '@/firebase/firebase';
 import db from '@/firebase/db';
+import storage from '@/firebase/storage';
 import { getField, updateField } from 'vuex-map-fields';
 import { PROPERTY_ONSALE_KEY } from '../../constants';
 
@@ -49,7 +50,8 @@ const getDefaultState = () => {
       },
       description: ''
     },
-    images: []
+    images: [],
+    onError: ''
   };
 };
 
@@ -83,16 +85,31 @@ const mutations = {
   },
   updateImages(state, data) {
     state.images = data;
+  },
+  deleteImage(state, index) {
+    state.images.splice(index, 1);
   }
 };
 
 const actions = {
   async addProperty({ state }, property) {
-    const result = db.collection('properties').doc();
-    console.log('result:', result, state);
+    const result = await db.collection('properties').doc();
+
+    let imageURLs = [];
+    for (let image of state.images) {
+      const fileData = await storage
+        .ref(`/properties/${result.id}`)
+        .child(image.name)
+        .put(image.file);
+      const downloadURL = await fileData.ref.getDownloadURL();
+      imageURLs.push(downloadURL);
+    }
+
     property.id = result.id;
     property.created_at = firebase.firestore.FieldValue.serverTimestamp();
     property.updated_at = firebase.firestore.FieldValue.serverTimestamp();
+    property.images = imageURLs;
+
     try {
       await db
         .collection('properties')
@@ -100,13 +117,42 @@ const actions = {
         .set(property);
     } catch (error) {
       console.error(error);
+      state.onError = error;
     }
+
+    // storage
+    //   .ref(`/properties/${result.id}`)
+    //   .putFiles(state.images)
+    //   .then(metadatas => {
+    //     console.log(metadatas);
+    //   })
+    //   .catch(function(error) {
+    //     console.log('ERROR:', error);
+    //   });
+
+    // let file;
+    // try {
+    //   file = await storage
+    //     .ref(`/properties/${result.id}/${state.images[0].name}`)
+    //     .put(state.images[0].file);
+    // } catch (error) {
+    //   console.error(error);
+    //   state.onError = error;
+    // }
+    // const file = await storage
+    //   .ref(`/properties/${result.id}/${state.images[0].name}`)
+    //   .put(state.images[0].file);
+    // console.log(file);
   },
   resetStateProperty({ commit }) {
     commit('resetState');
   },
   description({ commit }, data) {
     commit('description', data);
+  },
+  deleteImage({ commit, state }, name) {
+    const index = state.images.findIndex(item => item.name === name);
+    commit('deleteImage', index);
   }
 };
 

@@ -22,6 +22,7 @@
           :step="currentStep"
           :max-step="maxStep"
           :button-labels="currentButtonLabels"
+          :save-in-progress="saveInProgress"
           @step-next="stepNext"
           @step-prev="stepPrev"
           @on-complete="submitProperty"
@@ -77,7 +78,8 @@ export default {
         }
       ],
       currentStep: 0,
-      isOnOffer: true
+      isOnOffer: true,
+      saveInProgress: false
     };
   },
   provide() {
@@ -100,7 +102,9 @@ export default {
     // ...mapActions('properties', ['addProperty']),
     ...mapActions('property', ['addProperty', 'resetStateProperty']),
     async submitProperty() {
-      this.addProperty(this.property);
+      this.saveInProgress = true;
+      await this.addProperty(this.property);
+      this.saveInProgress = false;
       this.$toasted.show('Properties Added!').goAway(3000);
       this.currentStep = 0;
       this.resetStateProperty();

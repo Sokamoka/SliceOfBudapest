@@ -33,7 +33,7 @@
         <p class="control">
           <button
             type="button"
-            class="button is-success is-medium"
+            :class="saveButtonClasses"
             @click="clickNext"
           >
             <span>{{ buttonLabels.next }}</span>
@@ -59,6 +59,10 @@ export default {
     return { parentValidator: this.$validator };
   },
   props: {
+    saveInProgress: {
+      type: Boolean,
+      default: false
+    },
     step: {
       type: Number
     },
@@ -90,6 +94,14 @@ export default {
       return remainder > 0
         ? this.$i18n.t('properties.remaining', [remainder])
         : '';
+    },
+    saveButtonClasses() {
+      return {
+        button: true,
+        'is-success': true,
+        'is-medium': true,
+        'is-loading': this.saveInProgress
+      };
     }
   },
   methods: {

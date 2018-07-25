@@ -19,7 +19,7 @@
             <div
               class="column is-3"
               v-for="item in properties"
-              :key="item['.key']"
+              :key="item.id"
             >
               <card :item="item"></card>
             </div>
