@@ -13,6 +13,7 @@
     "vee-validate": "^2.1.0-beta.6",
     "vue": "^2.5.16",
     "vue-avatar": "^2.1.5",
+    "vue-clazy-load": "^0.4.2",
     "vue-i18n": "^8.0.0",
     "vue-router": "^3.0.1",
     "vue-toasted": "^1.1.24",

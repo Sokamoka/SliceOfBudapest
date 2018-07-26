@@ -16,8 +16,7 @@
       <section class="section">
         <div class="collections">
           <error :on-error="onError"></error>
-          <div>{{ isLoading }}</div>
-          <div class="columns is-multiline">
+          <div v-if="!isLoading" class="columns is-multiline">
             <div
               class="column is-3"
               v-for="item in properties"

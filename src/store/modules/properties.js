@@ -14,6 +14,9 @@ export default {
     getProperty: state => state.property,
     isLoading: state => state.isLoading,
     onError: state => state.onError
+    // propertyTitle: state => {
+    //   return true;
+    // }
   },
   actions: {
     init: firebaseAction(({ state, bindFirebaseRef }) => {

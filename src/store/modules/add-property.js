@@ -127,30 +127,6 @@ const actions = {
       console.error('ERROR', error);
       state.onError = error;
     }
-
-    // storage
-    //   .ref(`/properties/${result.id}`)
-    //   .putFiles(state.images)
-    //   .then(metadatas => {
-    //     console.log(metadatas);
-    //   })
-    //   .catch(function(error) {
-    //     console.log('ERROR:', error);
-    //   });
-
-    // let file;
-    // try {
-    //   file = await storage
-    //     .ref(`/properties/${result.id}/${state.images[0].name}`)
-    //     .put(state.images[0].file);
-    // } catch (error) {
-    //   console.error(error);
-    //   state.onError = error;
-    // }
-    // const file = await storage
-    //   .ref(`/properties/${result.id}/${state.images[0].name}`)
-    //   .put(state.images[0].file);
-    // console.log(file);
   },
   resetStateProperty({ commit }) {
     commit('resetState');

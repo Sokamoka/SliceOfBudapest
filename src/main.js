@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import App from './App.vue';
+import VueClazyLoad from 'vue-clazy-load';
 import { router } from './router';
 import { i18n } from './localization';
 import store from '@/store';
@@ -14,6 +15,8 @@ import Toasted from 'vue-toasted';
 Vue.use(Toasted, {
   position: 'top-center'
 });
+
+Vue.use(VueClazyLoad);
 
 Vue.config.productionTip = false;
 
