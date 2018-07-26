@@ -68,7 +68,7 @@ router.beforeEach((to, from, next) => {
   const requireAuth = to.matched.some(record => record.meta.requireAuth);
   const guestOnly = to.matched.some(record => record.meta.guestOnly);
 
-  console.log('Router - currentUser:', currentUser);
+  // console.log('Router - currentUser:', currentUser);
 
   if (requireAuth && !currentUser)
     next({ name: 'home', params: { locale: i18n.locale } });
