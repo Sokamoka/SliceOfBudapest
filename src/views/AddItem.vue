@@ -16,6 +16,7 @@
       <section class="section-progress">
         <progress class="progress is-primary is-large" :value="currentStep+1" :max="maxStep">1/5</progress>
       </section>
+      <error :on-error="onError"></error>
       <transition :name="taransitionDirection" mode="out-in">
         <component
           :is="currentStepComponent"
@@ -33,7 +34,8 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
+import Error from '@/components/Error.vue';
 
 import BaseData from './addItems/BaseData';
 import Address from './addItems/Address';
@@ -44,6 +46,7 @@ import Description from './addItems/Description';
 export default {
   name: 'AddItem',
   components: {
+    Error,
     BaseData,
     Address,
     AddImages,
@@ -88,6 +91,7 @@ export default {
   computed: {
     ...mapState('auth', ['user']),
     ...mapState('property', ['property']),
+    ...mapGetters('property', ['onError']),
     currentStepComponent() {
       return this.steps[this.currentStep];
     },
@@ -99,7 +103,6 @@ export default {
     }
   },
   methods: {
-    // ...mapActions('properties', ['addProperty']),
     ...mapActions('property', ['addProperty', 'resetStateProperty']),
     async submitProperty() {
       this.saveInProgress = true;
@@ -123,6 +126,7 @@ export default {
 <style lang="scss">
 .section-progress {
   margin-top: 30px;
+  margin-bottom: 10px;
 
   .progress::-webkit-progress-value {
     transition: width 0.5s ease;

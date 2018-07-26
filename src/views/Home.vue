@@ -15,6 +15,8 @@
     <div class="container">
       <section class="section">
         <div class="collections">
+          <error :on-error="onError"></error>
+          <div>{{ isLoading }}</div>
           <div class="columns is-multiline">
             <div
               class="column is-3"
@@ -32,17 +34,20 @@
 
 <script>
 // @ is an alias to /src
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 import Card from '@/components/Card.vue';
+import Error from '@/components/Error.vue';
 
 export default {
   name: 'home',
   components: {
-    Card
+    Card,
+    Error
   },
   data: () => ({}),
   computed: {
-    ...mapState('properties', ['properties'])
+    ...mapState('properties', ['properties']),
+    ...mapGetters('properties', ['isLoading', 'onError'])
   },
   mounted() {
     this.init();

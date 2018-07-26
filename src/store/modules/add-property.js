@@ -64,7 +64,8 @@ const getters = {
   getAddressField: state => getField(state.property.address),
   getDetailsField: state => getField(state.property.details),
   isOnOffer: state => state.property.base.type === PROPERTY_ONSALE_KEY,
-  images: state => state.images
+  images: state => state.images,
+  onError: state => state.onError
 };
 
 const mutations = {
@@ -93,14 +94,21 @@ const mutations = {
 
 const actions = {
   async addProperty({ state }, property) {
+    state.onError = '';
     const result = await db.collection('properties').doc();
 
     let imageURLs = [];
+    let fileData;
     for (let image of state.images) {
-      const fileData = await storage
-        .ref(`/properties/${result.id}`)
-        .child(image.name)
-        .put(image.file);
+      try {
+        fileData = await storage
+          .ref(`/properties/${result.id}`)
+          .child(image.name)
+          .put(image.file);
+      } catch (error) {
+        console.error('ERROR:', error);
+        state.onError = error;
+      }
       const downloadURL = await fileData.ref.getDownloadURL();
       imageURLs.push(downloadURL);
     }
@@ -116,7 +124,7 @@ const actions = {
         .doc(property.id)
         .set(property);
     } catch (error) {
-      console.error(error);
+      console.error('ERROR', error);
       state.onError = error;
     }
 
