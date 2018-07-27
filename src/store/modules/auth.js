@@ -2,7 +2,9 @@ import firebase from '@/firebase/firebase';
 
 const state = {
   user: {},
-  isLoggedIn: false
+  isLoggedIn: localStorage.getItem('gate')
+    ? localStorage.getItem('gate')
+    : false
 };
 
 const getters = {
@@ -15,9 +17,11 @@ const mutations = {
     if (user) {
       state.user = user;
       state.isLoggedIn = true;
+      localStorage.setItem('gate', true);
     } else {
       state.user = {};
       state.isLoggedIn = false;
+      localStorage.removeItem('gate');
     }
   }
 };

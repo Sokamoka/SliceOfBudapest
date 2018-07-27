@@ -28,7 +28,7 @@
           <div class="navbar-item has-dropdown is-hoverable" v-if="isLoggedIn">
             <a class="navbar-link" href="#">
               <avatar
-                :username="user.name"
+                :username="userName"
                 :src="user.image"
                 :size="32"
                 background-color="#303030"
@@ -80,13 +80,13 @@ export default {
     };
   },
   computed: {
-    ...mapState('auth', ['user', 'isLoggedIn'])
+    ...mapState('auth', ['user', 'isLoggedIn']),
+    userName() {
+      return this.user.name ? this.user.name : '';
+    }
   },
   methods: {
     ...mapActions('auth', ['login', 'logout']),
-    // logout() {
-    //   auth.logout();
-    // },
     menuToggle() {
       this.isMenuVisible = !this.isMenuVisible;
     },

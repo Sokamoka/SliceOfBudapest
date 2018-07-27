@@ -63,12 +63,11 @@ export const router = new Router({
 
 router.beforeEach((to, from, next) => {
   setLocale(to);
-  // const currentUser = auth.user();
   const currentUser = store.getters['auth/isLoggedIn'];
   const requireAuth = to.matched.some(record => record.meta.requireAuth);
   const guestOnly = to.matched.some(record => record.meta.guestOnly);
 
-  // console.log('Router - currentUser:', currentUser);
+  // console.log('Router - currentUser (isLoggedIn):', currentUser);
 
   if (requireAuth && !currentUser)
     next({ name: 'home', params: { locale: i18n.locale } });

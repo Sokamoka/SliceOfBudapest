@@ -12,8 +12,8 @@
           </div>
       </div>
     </section>
-    <div class="container">
-      <section class="section">
+    <section class="section">
+      <div class="container">
         <div class="collections">
           <error :on-error="onError"></error>
           <div v-if="!isLoading" class="columns is-multiline">
@@ -26,8 +26,8 @@
             </div>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   </div>
 </template>
 
