@@ -16,7 +16,9 @@ export default {
     if (!this.active) {
       return;
     }
+    console.log('XXXXX', this.$el.scrollHeight);
     this.$nextTick(() => {
+      console.log('X2X', this.$el.scrollHeight);
       this.$el.setAttribute(
         'style',
         'height:' + this.$el.scrollHeight + 'px;overflow-y:hidden;'

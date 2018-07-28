@@ -14,19 +14,24 @@
     </section>
     <section class="section">
     <div class="container">
+      <error :on-error="onError"></error>
       <div class="columns">
-        <div class="column is-8">
-          <section class="section-sub">
+        <div :class="mainColumnClasses">
+          <section class="images">
             <div class="card">
               <header class="card-header">
                 <p class="card-header-title">
                   {{ propertyTitle }}
                 </p>
               </header>
-              <div class="card-image">
-                <figure class="image is-4by3">
-                  <img :src="mainImageSrc" alt="Placeholder image">
-                </figure>
+              <!-- <div class="card-image">
+              </div> -->
+              <div :class="gridClasses">
+                <div
+                  v-for="(img, index) in limitedImages"
+                  :key="index"
+                  :style="bgImagesStyle(img)"
+                ></div>
               </div>
               <div class="card-content">
                 <div class="content">
@@ -59,21 +64,8 @@
             {{ description }}
           </section>
         </div>
-        <div class="column is-4">
-          <section class="section">
-            <nav class="panel">
-              <p class="panel-heading">
-                Comments
-              </p>
-              <p class="panel-tabs">
-                <a class="is-active">Comment</a>
-                <a>Contacts</a>
-              </p>
-              <a class="panel-block">
-                <textarea class="textarea" id="" cols="30" rows="10"></textarea>
-              </a>
-            </nav>
-          </section>
+        <div v-if="isLoggedIn" class="column is-4">
+          <comment-box></comment-box>
         </div>
       </div>
     </div>
@@ -83,15 +75,23 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import CommentBox from '../components/Comments';
+import Error from '@/components/Error.vue';
 
 export default {
+  name: 'Property',
+  components: {
+    CommentBox,
+    Error
+  },
   // data() {
   //   return {
   //     property: {}
   //   };
   // },
   computed: {
-    ...mapGetters('properties', ['getProperty', 'description']),
+    ...mapGetters('properties', ['getProperty', 'description', 'onError']),
+    ...mapGetters('auth', ['isLoggedIn']),
     property() {
       return this.getProperty ? this.getProperty[0] : null;
     },
@@ -104,14 +104,28 @@ export default {
       }
       return '';
     },
-    mainImageSrc() {
-      return this.property ? this.property.images[0] : '';
-    },
     description() {
       return this.property ? this.property.description : '';
     },
     details() {
       return this.property ? this.property.details : {};
+    },
+    mainColumnClasses() {
+      return {
+        column: true,
+        'is-8': this.isLoggedIn
+      };
+    },
+    limitedImages() {
+      return this.property ? this.property.images.slice(0, 3) : {};
+    },
+    gridClasses() {
+      return {
+        wrapper: true,
+        'is-1': this.limitedImages.length === 1,
+        'is-2': this.limitedImages.length === 2,
+        'is-3': this.limitedImages.length === 3
+      };
     }
   },
   created() {
@@ -127,11 +141,73 @@ export default {
       return {
         'is-empty': isEmpty
       };
+    },
+    bgImagesStyle(src) {
+      return {
+        backgroundImage: `url('${src}')`
+      };
     }
   }
 };
 </script>
 <style lang="scss">
+section.images {
+  margin-bottom: 48px;
+
+  .wrapper {
+    display: grid;
+    grid-gap: 1px;
+    height: 450px;
+
+    &.is-1 {
+      grid-template-columns: 100%;
+      > div {
+        &:nth-child(1) {
+          grid-column: 1;
+          grid-row: 1;
+        }
+      }
+    }
+
+    &.is-2 {
+      grid-template-columns: 60% 40%;
+      > div {
+        &:nth-child(1) {
+          grid-column: 1;
+          grid-row: 1 / 3;
+        }
+        &:nth-child(2) {
+          grid-column: 2;
+          grid-row: 1 / 3;
+        }
+      }
+    }
+
+    &.is-3 {
+      grid-template-columns: 70% 30%;
+      > div {
+        &:nth-child(1) {
+          grid-column: 1;
+          grid-row: 1 / 3;
+        }
+        &:nth-child(2) {
+          grid-column: 2;
+          grid-row: 1;
+        }
+        &:nth-child(3) {
+          grid-column: 2;
+          grid-row: 2;
+        }
+      }
+    }
+
+    > div {
+      // background-color: aqua;
+      background-size: cover;
+      background-position: 50% 50%;
+    }
+  }
+}
 .details {
   label {
     min-width: 60%;

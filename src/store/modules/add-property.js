@@ -48,7 +48,8 @@ const getDefaultState = () => {
         buildingLevels: null,
         groundSize: null
       },
-      description: ''
+      description: '',
+      comment: ''
     },
     images: [],
     onError: ''

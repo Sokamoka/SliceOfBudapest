@@ -7,15 +7,18 @@
     <div class="field is-expanded">
       <label v-if="!isHorizontal" class="label" v-html="label"></label>
       <div class="field">
-        <resizable :active="autosize">
-          <textarea 
-            :class="textareaClasses"
-            :placeholder="placeholder"
-            :rows="rows"
-            :disabled="disabled"
-            v-model="model"
-          ></textarea>
-        </resizable>
+        <div :class="controlClasses">
+          <resizable :active="autosize">
+            <textarea 
+              :class="textareaClasses"
+              :placeholder="placeholder"
+              :rows="rows"
+              :disabled="disabled"
+              v-model="model"
+              @change="change"
+            ></textarea>
+          </resizable>
+        </div>
       </div>
       <p v-if="hasErrors" class="help is-danger">{{ errorMessage }}</p>
       <p v-if="isHelpText" class="help">{{ help }}</p>
@@ -75,6 +78,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    isLoading: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -90,6 +97,12 @@ export default {
       return {
         field: true,
         'is-horizontal': this.isHorizontal
+      };
+    },
+    controlClasses() {
+      return {
+        control: true,
+        'is-loading': this.isLoading
       };
     },
     textareaClasses() {
@@ -110,6 +123,11 @@ export default {
   },
   created() {
     this.$validator = this.parentValidator;
+  },
+  methods: {
+    change() {
+      this.$emit('change', this.model);
+    }
   }
 };
 </script>

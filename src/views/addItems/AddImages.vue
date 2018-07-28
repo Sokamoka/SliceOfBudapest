@@ -4,7 +4,20 @@
       <h1 class="is-size-3">Képek feltöltése ({{ step + 1 }}/{{ maxStep }})</h1>
     </section>
     <section class="section">
-      <div class="field">
+      <form enctype="multipart/form-data" novalidate>
+        <div class="dropbox">
+          <input
+            class="input-file"
+            type="file"
+            name="resume"
+            accept="image/*"
+            multiple
+            @change="onFileSelected"
+          >
+          <p>Drag your file(s) here to begin<br> or click to browse</p>
+        </div>
+      </form>
+      <!-- <div class="field">
           <div class="file is-large is-boxed">
             <label class="file-label">
               <input
@@ -25,7 +38,7 @@
               </span>
             </label>
           </div>
-        </div>
+        </div> -->
     </section>
     <section class="section">
       <div class="columns is-multiline">
@@ -167,3 +180,33 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+.dropbox {
+  outline: 2px dashed grey; /* the dash box */
+  outline-offset: -10px;
+  background: lightcyan;
+  color: dimgray;
+  padding: 10px 10px;
+  min-height: 200px; /* minimum height */
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    background: lightblue; /* when mouse over to the drop zone, change color */
+  }
+
+  .input-file {
+    opacity: 0;
+    width: 100%;
+    height: 200px;
+    position: absolute;
+    cursor: pointer;
+  }
+
+  p {
+    font-size: 1.2em;
+    text-align: center;
+    padding: 50px 0;
+  }
+}
+</style>

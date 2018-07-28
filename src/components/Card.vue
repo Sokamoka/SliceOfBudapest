@@ -7,8 +7,9 @@
           tag="figure"
           :ratio="0.2"
           :threshold="[0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]"
-          :src="item.images[0]">
-          <img :src="item.images[0]" slot="image">
+          :src="image">
+          <img :src="image" slot="image">
+          <img src="@/assets/placeholder.png" slot="placeholder">
         </clazy-load>
       </router-link>
     </div>
@@ -26,6 +27,11 @@ export default {
     item: {
       type: Object,
       default: () => {}
+    }
+  },
+  computed: {
+    image() {
+      return this.item.images[0] ? this.item.images[0] : '';
     }
   }
 };

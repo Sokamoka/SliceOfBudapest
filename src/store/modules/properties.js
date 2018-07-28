@@ -13,10 +13,13 @@ export default {
     getProperties: state => state.properties,
     getProperty: state => state.property,
     isLoading: state => state.isLoading,
-    onError: state => state.onError
-    // propertyTitle: state => {
-    //   return true;
-    // }
+    onError: state => state.onError,
+    getComment: state => (state.propterty ? state.property[0].comment : '')
+  },
+  mutations: {
+    updateComment(state, value) {
+      state.property[0].comment = value;
+    }
   },
   actions: {
     init: firebaseAction(({ state, bindFirebaseRef }) => {
@@ -38,6 +41,20 @@ export default {
         'property',
         db.collection('properties').where('id', '==', id)
       );
-    })
+    }),
+    async saveComment({ state }, data) {
+      // console.log('Store:', data);
+      try {
+        await db
+          .collection('properties')
+          .doc(data.id)
+          .update({
+            comment: data.comment
+          });
+      } catch (error) {
+        console.error('ON-ERROR:', error);
+        state.onError = error.message;
+      }
+    }
   }
 };
