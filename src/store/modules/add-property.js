@@ -70,6 +70,9 @@ const getters = {
 };
 
 const mutations = {
+  offError(state) {
+    state.onError = '';
+  },
   resetState(state) {
     Object.assign(state, getDefaultState());
   },
@@ -94,6 +97,9 @@ const mutations = {
 };
 
 const actions = {
+  offError({ commit }) {
+    commit('offError');
+  },
   async addProperty({ state }, property) {
     state.onError = '';
     const result = await db.collection('properties').doc();

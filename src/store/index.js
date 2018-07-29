@@ -5,7 +5,7 @@ import { firebaseMutations } from 'vuexfire';
 
 import auth from './modules/auth';
 import user from './modules/user';
-// import user from './modules/user';
+import error from './modules/error';
 import properties from './modules/properties';
 import property from './modules/add-property';
 
@@ -16,6 +16,7 @@ export default new Vuex.Store({
   modules: {
     auth,
     user,
+    error,
     properties,
     property
   }

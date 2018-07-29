@@ -1,8 +1,10 @@
 <template>
-  <div v-if="isVisible" class="notification is-danger">
-    <!-- <button class="delete"></button> -->
-    {{ onError }}
-  </div>
+  <transition name="slide-down" mode="in-out">
+    <div v-if="isVisible" class="notification is-danger">
+      <button class="delete" @click="close"></button>
+      {{ onError }}
+    </div>
+  </transition>
 </template>
 <script>
 export default {
@@ -23,7 +25,9 @@ export default {
     }
   },
   methods: {
-    close() {}
+    close() {
+      this.$emit('close');
+    }
   }
 };
 </script>

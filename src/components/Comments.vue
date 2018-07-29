@@ -13,13 +13,13 @@
         placeholder="Comment"
         :rows="10"
         @change="changeComment"
-        :is-loading="isLoading"
+        :is-loading="isSaveing"
       ></control-textarea>
     </a>
   </nav>
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 import ControlTextarea from '@/components/form-controls/control-textarea';
 
 export default {
@@ -29,17 +29,18 @@ export default {
   props: {
     value: {
       type: String
+    },
+    isSaveing: {
+      type: Boolean,
+      default: false
     }
   },
   provide() {
     return { parentValidator: this.$validator };
   },
-  data() {
-    return {
-      // comment: '',
-      isLoading: false
-    };
-  },
+  // data() {
+  //   return {};
+  // },
   computed: {
     ...mapGetters('properties', ['getProperty']),
     comment: {
@@ -50,20 +51,13 @@ export default {
         this.$store.commit('properties/updateComment', value);
       }
     }
-    // comment() {
-    //   return this.value;
-    // }
   },
   methods: {
-    ...mapActions('properties', ['saveComment']),
-    async changeComment() {
-      // console.log(this.$route.params.id);
-      this.isLoading = true;
-      await this.saveComment({
+    changeComment() {
+      this.$emit('change', {
         id: this.$route.params.id,
         comment: this.comment
       });
-      this.isLoading = false;
     }
   }
 };

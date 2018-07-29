@@ -14,7 +14,7 @@
     </section>
     <section class="section">
     <div class="container">
-      <error :on-error="onError"></error>
+      <error :on-error="onError" @close="offError"></error>
       <div class="columns">
         <div :class="mainColumnClasses">
           <section class="images">
@@ -65,7 +65,7 @@
           </section>
         </div>
         <div v-if="isLoggedIn" class="column is-4">
-          <comment-box></comment-box>
+          <comment-box :is-saveing="isCommentSaveing" @change="changeComment"></comment-box>
         </div>
       </div>
     </div>
@@ -84,13 +84,14 @@ export default {
     CommentBox,
     Error
   },
-  // data() {
-  //   return {
-  //     property: {}
-  //   };
-  // },
+  data() {
+    return {
+      isCommentSaveing: false
+    };
+  },
   computed: {
     ...mapGetters('properties', ['getProperty', 'description', 'onError']),
+    ...mapGetters('error', ['onError']),
     ...mapGetters('auth', ['isLoggedIn']),
     property() {
       return this.getProperty ? this.getProperty[0] : null;
@@ -132,7 +133,8 @@ export default {
     this.initProperty(this.$route.params.id);
   },
   methods: {
-    ...mapActions('properties', ['initProperty']),
+    ...mapActions('error', ['offError']),
+    ...mapActions('properties', ['initProperty', 'saveComment']),
     getDetailsData(data) {
       return data ? data : 'nincs adat';
     },
@@ -146,6 +148,12 @@ export default {
       return {
         backgroundImage: `url('${src}')`
       };
+    },
+    async changeComment(comment) {
+      // console.log(comment);
+      this.isCommentSaveing = true;
+      await this.saveComment(comment);
+      this.isCommentSaveing = false;
     }
   }
 };

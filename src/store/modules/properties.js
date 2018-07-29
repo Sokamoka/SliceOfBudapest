@@ -5,7 +5,7 @@ export default {
   namespaced: true,
   state: {
     isLoading: false,
-    onError: '',
+    // onError: '',
     properties: [],
     property: {}
   },
@@ -20,9 +20,15 @@ export default {
     updateComment(state, value) {
       state.property[0].comment = value;
     }
+    // offError(state) {
+    //   state.onError = '';
+    // }
   },
   actions: {
-    init: firebaseAction(({ state, bindFirebaseRef }) => {
+    // offError({ commit }) {
+    //   commit('offError');
+    // },
+    init: firebaseAction(({ state, rootState, bindFirebaseRef }) => {
       state.isLoading = true;
       bindFirebaseRef(
         'properties',
@@ -31,9 +37,9 @@ export default {
         .then(() => {
           state.isLoading = false;
         })
-        .catch(err => {
-          console.error('ERROR:', err);
-          state.onError = err;
+        .catch(error => {
+          // console.error('ERROR:', error);
+          rootState.error.onError = error.message;
         });
     }),
     initProperty: firebaseAction(({ bindFirebaseRef }, id) => {
@@ -42,7 +48,7 @@ export default {
         db.collection('properties').where('id', '==', id)
       );
     }),
-    async saveComment({ state }, data) {
+    async saveComment({ rootState }, data) {
       // console.log('Store:', data);
       try {
         await db
@@ -52,8 +58,8 @@ export default {
             comment: data.comment
           });
       } catch (error) {
-        console.error('ON-ERROR:', error);
-        state.onError = error.message;
+        // console.error('ON-ERROR:', error);
+        rootState.error.onError = error.message;
       }
     }
   }

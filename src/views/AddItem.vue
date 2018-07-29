@@ -16,7 +16,7 @@
       <section class="section-progress">
         <progress class="progress is-primary is-large" :value="currentStep+1" :max="maxStep">1/5</progress>
       </section>
-      <error :on-error="onError"></error>
+      <error :on-error="onError" @close="offError"></error>
       <transition :name="taransitionDirection" mode="out-in">
         <component
           :is="currentStepComponent"
@@ -103,7 +103,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions('property', ['addProperty', 'resetStateProperty']),
+    ...mapActions('property', [
+      'addProperty',
+      'resetStateProperty',
+      'offError'
+    ]),
     async submitProperty() {
       this.saveInProgress = true;
       await this.addProperty(this.property);
