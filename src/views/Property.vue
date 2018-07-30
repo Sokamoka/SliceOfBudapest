@@ -31,7 +31,15 @@
                   v-for="(img, index) in limitedImages"
                   :key="index"
                   :style="bgImagesStyle(img)"
-                ></div>
+                  @click="imgIndex = index"
+                >
+                  <div
+                    v-if="imagesLength > 3 && index === 2"
+                    class="more"
+                  >
+                    <div>+{{ imagesLength - 3 }}</div>
+                  </div>
+                </div>
               </div>
               <div class="card-content">
                 <div class="content">
@@ -70,23 +78,34 @@
       </div>
     </div>
     </section>
+    <gallery
+      :images="images"
+      :index.sync="imgIndex"
+      @change="changeGallery"
+      @close="closeGallery"
+      caption
+    ></gallery>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import { router } from '@/router';
 import CommentBox from '../components/Comments';
 import Error from '@/components/Error.vue';
+import Gallery from '@/components/Gallery';
 
 export default {
   name: 'Property',
   components: {
     CommentBox,
-    Error
+    Error,
+    Gallery
   },
   data() {
     return {
-      isCommentSaveing: false
+      isCommentSaveing: false,
+      imgIndex: null
     };
   },
   computed: {
@@ -120,6 +139,12 @@ export default {
     limitedImages() {
       return this.property ? this.property.images.slice(0, 3) : {};
     },
+    images() {
+      return this.property ? this.property.images : [];
+    },
+    imagesLength() {
+      return this.property ? this.property.images.length : 0;
+    },
     gridClasses() {
       return {
         wrapper: true,
@@ -131,6 +156,12 @@ export default {
   },
   created() {
     this.initProperty(this.$route.params.id);
+  },
+  mounted() {
+    console.log(this.$route.params);
+    this.imgIndex = this.$route.params.index
+      ? parseInt(this.$route.params.index)
+      : null;
   },
   methods: {
     ...mapActions('error', ['offError']),
@@ -154,6 +185,17 @@ export default {
       this.isCommentSaveing = true;
       await this.saveComment(comment);
       this.isCommentSaveing = false;
+      this.$toasted.show('Comment saved!').goAway(3000);
+    },
+    changeGallery(index) {
+      const locale = this.$i18n.locale;
+      const id = this.$route.params.id;
+      router.replace({ path: `/${locale}/property/${id}/g/${index}` });
+    },
+    closeGallery() {
+      const locale = this.$i18n.locale;
+      const id = this.$route.params.id;
+      router.replace({ path: `/${locale}/property/${id}` });
     }
   }
 };
@@ -210,9 +252,24 @@ section.images {
     }
 
     > div {
-      // background-color: aqua;
+      position: relative;
+      background-color: lightgray;
       background-size: cover;
       background-position: 50% 50%;
+      cursor: pointer;
+
+      .more {
+        display: flex;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+        color: #ffffff;
+        text-align: center;
+        font-size: 45px;
+        align-items: center;
+        justify-content: center;
+      }
     }
   }
 }

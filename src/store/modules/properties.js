@@ -5,9 +5,8 @@ export default {
   namespaced: true,
   state: {
     isLoading: false,
-    // onError: '',
     properties: [],
-    property: {}
+    property: []
   },
   getters: {
     getProperties: state => state.properties,
@@ -19,15 +18,12 @@ export default {
   mutations: {
     updateComment(state, value) {
       state.property[0].comment = value;
+    },
+    updateProperties(state) {
+      state.properties = state.propertiesCollection;
     }
-    // offError(state) {
-    //   state.onError = '';
-    // }
   },
   actions: {
-    // offError({ commit }) {
-    //   commit('offError');
-    // },
     init: firebaseAction(({ state, rootState, bindFirebaseRef }) => {
       state.isLoading = true;
       bindFirebaseRef(

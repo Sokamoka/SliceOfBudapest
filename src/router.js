@@ -47,7 +47,12 @@ const routes = [
     path: '/:locale/property/:id',
     name: 'property',
     component: Property,
-    meta: { requireAuth: true }
+    children: [
+      {
+        path: 'g/:index',
+        component: Property
+      }
+    ]
   },
   {
     path: '/:locale/*',
@@ -58,6 +63,7 @@ const routes = [
 
 export const router = new Router({
   mode: 'history',
+  linkActiveClass: 'is-active',
   routes
 });
 
