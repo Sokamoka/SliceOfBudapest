@@ -44,40 +44,16 @@
     </section>
     <section class="section">
       <div class="container">
-        <nav class="level">
-          <!-- Left side -->
-          <div class="level-left">
-            <div class="level-item">
-              <p class="control">
-                  <input class="input" type="text" placeholder="Find a post">
-              </p>
-            </div>
-            <div class="level-item">
-              <div class="field has-addons">
-                <p class="control">
-                  <input class="input" type="text" placeholder="Find a post">
-                </p>
-                <p class="control">
-                  <button class="button">
-                    Search
-                  </button>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Right side -->
-          <div class="level-right">
-            <p class="level-item"><strong>All</strong></p>
-            <p class="level-item"><a>Published</a></p>
-            <p class="level-item"><a>Drafts</a></p>
-            <p class="level-item"><a>Deleted</a></p>
-            <p class="level-item"><a class="button is-success">New</a></p>
-          </div>
-        </nav>
+        <search @search="searchQuery"></search>
+        <ul>
+          <li v-for="(result, index) in searchResult" :key="index">({{ index+1 }}) {{ result.address.city }}, {{ result.base.propertiesType }}</li>
+        </ul>
+        <div class="flex">
+          <a href="#" class="button is-light" @click.prevent="loadMore">more</a>
+        </div>
       </div>
     </section>
-    <section>
+    <!-- <section>
       <div class="container">
         <div v-if="user">
           <h1>Hello USER!</h1>
@@ -87,20 +63,26 @@
           <pre>{{user}}</pre>
         </div>
       </div>
-    </section>
+    </section> -->
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import Search from '@/components/Search';
+import db from '@/firebase/db';
 
 export default {
-  name: 'auth-success',
+  name: 'Dashboard',
+  components: {
+    Search
+  },
   computed: {
     ...mapGetters('properties', [
       'getPropertiesCount',
       'getOnRentCount',
-      'getOnSaleCount'
+      'getOnSaleCount',
+      'searchResult'
     ]),
     user() {
       return this.$store.getters['auth/user'];
@@ -111,9 +93,21 @@ export default {
     this.propertiesCategoryCount('sale');
     this.propertiesCategoryCount('rent');
   },
-  methods: mapActions('properties', [
-    'propertiesCount',
-    'propertiesCategoryCount'
-  ])
+  methods: {
+    ...mapActions('properties', [
+      'propertiesCount',
+      'propertiesCategoryCount',
+      'search',
+      'loadMore'
+    ]),
+    searchQuery(query) {
+      const ref = db
+        .collection('properties')
+        .where('base.type', '==', query.type)
+        .where('base.propertiesType', '==', query.propertiesType);
+
+      this.search(ref);
+    }
+  }
 };
 </script>
