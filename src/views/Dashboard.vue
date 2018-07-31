@@ -48,7 +48,7 @@
         <ul>
           <li v-for="(result, index) in searchResult" :key="index">({{ index+1 }}) {{ result.address.city }}, {{ result.base.propertiesType }}</li>
         </ul>
-        <div class="flex">
+        <div v-if="moreButtonVisible" class="flex">
           <a href="#" class="button is-light" @click.prevent="loadMore">more</a>
         </div>
       </div>
@@ -82,10 +82,14 @@ export default {
       'getPropertiesCount',
       'getOnRentCount',
       'getOnSaleCount',
-      'searchResult'
+      'searchResult',
+      'paging'
     ]),
     user() {
       return this.$store.getters['auth/user'];
+    },
+    moreButtonVisible() {
+      return !!this.searchResult.length && !this.paging.end;
     }
   },
   created() {

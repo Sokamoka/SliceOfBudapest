@@ -50,7 +50,7 @@ export default {
     return {
       search: {
         type: PROPERTY_ONSALE_KEY,
-        propertiesType: ''
+        propertiesType: 'Lakás'
       }
     };
   },

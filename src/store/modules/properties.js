@@ -30,7 +30,8 @@ export default {
     getPropertiesCount: state => state.propertiesCount,
     getOnSaleCount: state => state.saleCount,
     getOnRentCount: state => state.rentCount,
-    searchResult: state => state.searchResult
+    searchResult: state => state.searchResult,
+    paging: state => state.paging
   },
   mutations: {
     updateComment(state, value) {
@@ -41,6 +42,9 @@ export default {
     },
     resetSearchResult(state) {
       state.searchResult = [];
+      state.ref.results = null;
+      state.ref.resultsNext = null;
+      state.paging.end = false;
     }
   },
   actions: {
@@ -111,7 +115,8 @@ export default {
     //       .where('base.propertiesType', '==', query.propertiesType)
     //   );
     // })
-    search({ state, dispatch }, ref) {
+    search({ state, commit, dispatch }, ref) {
+      commit('resetSearchResult');
       state.ref.results = ref;
       const firstPage = ref.limit(state.paging.item_per_page);
       dispatch('handlePaging', firstPage);
