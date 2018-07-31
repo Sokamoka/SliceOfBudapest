@@ -1,5 +1,17 @@
 <template>
   <div>
+    <section class="hero is-primary">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+              {{ $t('titles.dashboard') }}
+          </h1>
+          <h2 class="subtitle">
+              {{ $t('menu.dashboard') }}
+          </h2>
+        </div>
+      </div>
+    </section>
     <section class="section">
       <nav class="level">
         <div class="level-item has-text-centered">
@@ -28,14 +40,17 @@
         </div>
       </nav>
     </section>
-    <div v-if="user">
-      <h1>Hello USER!</h1>
-      <img :src="user.image" width="100"> <br>
-      <h3>{{user.name}}</h3>
-      <!-- <p>{{user.email}}</p> -->
-      <br><br><br>
-      <pre>{{user}}</pre>
-    </div>
+    <section>
+      <div class="container">
+        <div v-if="user">
+          <h1>Hello USER!</h1>
+          <img :src="user.image" width="100"> <br>
+          <h3>{{user.name}}</h3>
+          <br><br>
+          <pre>{{user}}</pre>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 

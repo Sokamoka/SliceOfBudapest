@@ -1,7 +1,13 @@
 export default {
+  menu: {
+    dashboard: 'Dashboard',
+    properties: 'Properties',
+    'add-property': 'Add property'
+  },
   titles: {
     'add-new-property': 'Add new property',
-    properties: 'Properties'
+    properties: 'Properties',
+    dashboard: 'Welcome at home'
   },
   properties: {
     size: 'Size',

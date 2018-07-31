@@ -1,7 +1,8 @@
 import firebase from '@/firebase/firebase';
 import store from '@/store';
 import db from '@/firebase/db';
-// import router from '@/router';
+import { i18n } from '@/localization';
+import { router } from '@/router';
 
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
@@ -15,7 +16,7 @@ firebase.auth().onAuthStateChanged(user => {
       .doc(setUser.id)
       .set(setUser);
     store.commit('auth/setUser', setUser);
-    // router.push('/subreddits');
+    router.push({ name: 'dashboard', params: { locale: i18n.locale } });
   } else {
     store.commit('auth/setUser', null);
   }

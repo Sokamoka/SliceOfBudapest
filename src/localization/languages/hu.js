@@ -1,7 +1,13 @@
 export default {
+  menu: {
+    dashboard: 'Irányítópult',
+    properties: 'Ingatlanok',
+    'add-property': 'Ingatlan hozzáadása'
+  },
   titles: {
     'add-new-property': 'Új ingatlan hozzáadása',
-    properties: 'Ingatlanok'
+    properties: 'Ingatlanok',
+    dashboard: 'Köszöntelek itthon'
   },
   properties: {
     size: 'Méret',

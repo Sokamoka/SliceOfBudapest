@@ -15,13 +15,13 @@
       <div id="navbarTop" :class="{ 'navbar-menu': true, 'is-active': isMenuVisible }">
         <div class="navbar-start">
           <router-link class="navbar-item" :to="{ name: 'dashboard', params: { locale: $i18n.locale } }" v-if="isLoggedIn">
-            Dashboard
+           {{ $t('menu.dashboard') }}
           </router-link>
-          <router-link class="navbar-item" :to="{ name: 'home', params: { locale: $i18n.locale } }" v-if="isLoggedIn">
-            Properties
+          <router-link class="navbar-item" :to="{ name: 'home', params: { locale: $i18n.locale } }">
+            {{ $t('menu.properties') }}
           </router-link>
           <router-link class="navbar-item" :to="{name: 'add', params: { locale: $i18n.locale }}" v-if="isLoggedIn">
-            Add Item
+            {{ $t('menu.add-property') }}
           </router-link>
         </div>
         <div class="navbar-end">

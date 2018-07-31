@@ -1,4 +1,5 @@
 import firebase from '@/firebase/firebase';
+import { router } from '@/router';
 
 const state = {
   user: {},
@@ -33,6 +34,7 @@ const actions = {
   },
   async logout() {
     await firebase.auth().signOut();
+    router.push({ path: '/' });
   }
 };
 
