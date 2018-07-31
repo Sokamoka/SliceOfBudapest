@@ -10,6 +10,8 @@ export default {
     dashboard: 'Köszöntelek itthon'
   },
   properties: {
+    sale: 'Eladó',
+    rent: 'Kiadó',
     size: 'Méret',
     remaining: 'Még minimum {0} karakter'
   },

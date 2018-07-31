@@ -10,6 +10,8 @@ export default {
     dashboard: 'Welcome at home'
   },
   properties: {
+    sale: 'On Sale',
+    rent: 'On Rent',
     size: 'Size',
     remaining: 'More minimum {0} character'
   },

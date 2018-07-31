@@ -1,6 +1,8 @@
 export const DESCRIPTION_LENGTH = 25;
 
-export const PROPERTY_ONSALE_KEY = 'eladó';
+export const PROPERTY_ONSALE_KEY = 'sale';
+
+export const PROPERTIES_MAIN_TYPES = ['sale', 'rent'];
 
 export const PROPERTIES_TYPE = [
   'Lakás',

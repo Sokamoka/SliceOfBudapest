@@ -13,32 +13,69 @@
       </div>
     </section>
     <section class="section">
-      <nav class="level">
-        <div class="level-item has-text-centered">
-          <div>
-            <p class="heading">Tweets</p>
-            <p class="title">3,456</p>
+      <div class="container">
+        <nav class="level">
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Ingatlan</p>
+              <p class="title">{{ getPropertiesCount }}</p>
+            </div>
           </div>
-        </div>
-        <div class="level-item has-text-centered">
-          <div>
-            <p class="heading">Following</p>
-            <p class="title">123</p>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Eladó</p>
+              <p class="title">{{ getOnSaleCount }}</p>
+            </div>
           </div>
-        </div>
-        <div class="level-item has-text-centered">
-          <div>
-            <p class="heading">Followers</p>
-            <p class="title">456K</p>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Kiadó</p>
+              <p class="title">{{ getOnRentCount }}</p>
+            </div>
           </div>
-        </div>
-        <div class="level-item has-text-centered">
-          <div>
-            <p class="heading">Likes</p>
-            <p class="title">789</p>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Kollekció</p>
+              <p class="title">456K</p>
+            </div>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <nav class="level">
+          <!-- Left side -->
+          <div class="level-left">
+            <div class="level-item">
+              <p class="control">
+                  <input class="input" type="text" placeholder="Find a post">
+              </p>
+            </div>
+            <div class="level-item">
+              <div class="field has-addons">
+                <p class="control">
+                  <input class="input" type="text" placeholder="Find a post">
+                </p>
+                <p class="control">
+                  <button class="button">
+                    Search
+                  </button>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right side -->
+          <div class="level-right">
+            <p class="level-item"><strong>All</strong></p>
+            <p class="level-item"><a>Published</a></p>
+            <p class="level-item"><a>Drafts</a></p>
+            <p class="level-item"><a>Deleted</a></p>
+            <p class="level-item"><a class="button is-success">New</a></p>
+          </div>
+        </nav>
+      </div>
     </section>
     <section>
       <div class="container">
@@ -55,15 +92,28 @@
 </template>
 
 <script>
-// import auth from '@/auth';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'auth-success',
   computed: {
+    ...mapGetters('properties', [
+      'getPropertiesCount',
+      'getOnRentCount',
+      'getOnSaleCount'
+    ]),
     user() {
       return this.$store.getters['auth/user'];
     }
   },
-  methods: {}
+  created() {
+    this.propertiesCount();
+    this.propertiesCategoryCount('sale');
+    this.propertiesCategoryCount('rent');
+  },
+  methods: mapActions('properties', [
+    'propertiesCount',
+    'propertiesCategoryCount'
+  ])
 };
 </script>

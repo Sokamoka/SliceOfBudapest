@@ -9,8 +9,7 @@
             v-model="type"
             label="Eladó / Kiadó"
           >
-            <option value="eladó">Eladó</option>
-            <option value="kiadó">Kiadó</option>
+            <option v-for="option in propertiesMainTypes" :key="option.value" :value="option">{{ $t('properties.'+option) }}</option>
           </control-select>
         </div>
 
@@ -88,7 +87,7 @@
 <script>
 import { createHelpers } from 'vuex-map-fields';
 import { mapGetters } from 'vuex';
-import { PROPERTIES_TYPE } from '../../constants';
+import { PROPERTIES_TYPE, PROPERTIES_MAIN_TYPES } from '../../constants';
 import ControlInput from '@/components/form-controls/control-input';
 import ControlSelect from '@/components/form-controls/control-select';
 
@@ -128,6 +127,9 @@ export default {
       'priceOnRent',
       'size'
     ]),
+    propertiesMainTypes() {
+      return PROPERTIES_MAIN_TYPES;
+    },
     propertiesTypes() {
       return PROPERTIES_TYPE;
     },
